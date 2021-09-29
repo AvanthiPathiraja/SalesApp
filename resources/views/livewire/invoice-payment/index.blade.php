@@ -1,6 +1,3 @@
-<x-slot name="header">
-    <x-page-title> Invoice Payment Info </x-page-title>
-</x-slot>
 
 <x-page-body>
         <x-card>

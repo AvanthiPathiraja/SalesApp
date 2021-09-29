@@ -1,9 +1,3 @@
-<x-slot name="header">
-    <x-page-title>
-        {{ $issue_note ? 'Update Issue Note' : 'New Issue Note' }}
-    </x-page-title>
-</x-slot>
-
 <x-page-body>
     <x-card>
         <div class="grid grid-cols-5 gap-3 gap-x-4">

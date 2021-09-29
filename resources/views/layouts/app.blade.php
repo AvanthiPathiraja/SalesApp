@@ -1,5 +1,5 @@
 <!DOCTYPE html >
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="bg-gray-800 text-gray-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="bg-gray-800 text-gray-200">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,19 +18,21 @@
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased ">
-        <x-jet-banner />
+    <body class="font-sans antialiased h-screen overflow-hidden flex items-start justify-center">
+        <x-layout.sidebar />
 
-        <div class="min-h-screen bg-gray-800">
+        <main class=" w-full">
             @livewire('navigation-menu')
-
-
-
             <!-- Page Content -->
-            <main>
+            <div class=" mt-6">
                 {{ $slot }}
-            </main>
-        </div>
+            </div>
+        </main>
+  
+        {{-- <div class="min-h-screen bg-gray-800">
+            @livewire('navigation-menu')
+            
+        </div> --}}
 
         @stack('modals')
 

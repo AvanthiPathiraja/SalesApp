@@ -1,10 +1,3 @@
-<x-slot name="header">
-    <x-page-title>
-        {{ $stock ? 'Edit Stock Info' : 'Add New Stock' }}
-
-    </x-page-title>
-</x-slot>
-
 <x-page-body>
     <x-card>
 

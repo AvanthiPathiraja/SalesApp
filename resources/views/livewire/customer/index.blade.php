@@ -1,8 +1,6 @@
-<x-slot name="header">
-        <x-page-title>Customers Info </x-page-title>
-    </x-slot>
+<x-page-body>
 
-    <div>
+    <div class=" mx-auto">
         <x-table>
             <x-table-head>
                 <th>Number</th>
@@ -12,7 +10,7 @@
                 <th>Mobile</th>
                 <th>Route</th>
                 <th>Address</th>
-                <th>Email/th>
+                <th>Email</th>
                 <th>Note</th>
                 <th></th>
                 <th></th>
@@ -45,6 +43,7 @@
 
         {{ $customers->links() }}
     </div>
+</x-page-body>
 
 
 

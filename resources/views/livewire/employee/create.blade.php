@@ -1,8 +1,3 @@
-<x-slot name="header">
-    <x-page-title>
-        {{ $employee ? 'Edit Employee Info' : 'Add New Employee' }}
-    </x-page-title>
-</x-slot>
 
 <x-page-body>
     <x-card>

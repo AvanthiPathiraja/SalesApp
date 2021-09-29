@@ -1,8 +1,4 @@
-<x-slot name="header">
-    <x-page-title>
-        {{ $invoice ? 'Edit Invoice' : 'New Invoice' }}
-    </x-page-title>
-</x-slot>
+
 
 <x-page-body>
     <x-card>

@@ -1,9 +1,3 @@
-<x-slot name="header">
-    <x-page-title>
-        {{ $product ? 'Edit Product Info' : 'Add New Product' }}
-    </x-page-title>
-</x-slot>
-
 <x-page-body>
     <x-card>
 

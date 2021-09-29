@@ -1,0 +1,1 @@
+<a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent hover:bg-gray-600 focus:bg-gray-600 focus:text-white hover:text-white text-gray-200   focus:outline-none focus:shadow-outline" href="{{ $path }}">{{ $name }}</a>
