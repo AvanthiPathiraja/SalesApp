@@ -1,4 +1,4 @@
-<div class="md:flex flex-col md:flex-row md:min-h-screen w-64">
+<div class="md:flex flex-col md:flex-row md:min-h-screen w-64 fixed left-0 top-0 bottom-0">
     <div @click.away="open = false"
       class="flex flex-col w-full md:w-64 text-gray-200 bg-gray-900 dark-mode:text-gray-200 dark-mode:bg-gray-800 flex-shrink-0"
       x-data="{ open: false }">

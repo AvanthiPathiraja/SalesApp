@@ -18,10 +18,10 @@
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased h-screen overflow-hidden flex items-start justify-center">
+    <body class="font-sans antialiased overflow-x-hidden flex items-start justify-center">
         <x-layout.sidebar />
 
-        <main class=" w-full">
+        <main class=" w-full ml-64">
             @livewire('navigation-menu')
             <!-- Page Content -->
             <div class=" mt-6">
