@@ -27,4 +27,9 @@ class IssueItem extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+
+    public function issue_return()
+    {
+        return $this->hasOne(IssueReturn::class);
+    }
 }

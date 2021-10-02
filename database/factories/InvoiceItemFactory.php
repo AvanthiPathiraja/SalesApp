@@ -7,22 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoiceItemFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = InvoiceItem::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
+
     public function definition()
     {
         return [
-            //
+            'invoice_id' => $this->faker->numberBetween(1,1000),
+            'issue_item_id' => $this->faker->numberBetween(1,3000),
+            'stock_id' => $this->faker->numberBetween(1,1000),
+            'unit_price' => $this->faker->numberBetween(10,2000),
+            'unit_discount' => $this->faker->numberBetween(1,500),
+            'quantity' => $this->faker->numberBetween(1,2000),
         ];
     }
 }

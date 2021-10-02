@@ -12,9 +12,9 @@ class InvoicePayment extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function invoice()
+    public function distributor()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->belongsTo(Employee::class,'distributor_id');
     }
 
     public function customer()

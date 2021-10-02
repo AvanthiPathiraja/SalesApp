@@ -12,12 +12,10 @@
                 <th>Number</th>
                 <th>Category</th>
                 <th>Name</th>
-                <th>Unit</th>
-                <th>Metric</th>
+                 <th>Metric</th>
                 <th>Size</th>
-                <th>Minimum Stock</th>
+                <th>Minimum Stock Level</th>
                 <th>Unit Price</th>
-                <th>Note</th>
                 <th></th>
                 <th></th>
             </x-table-head>
@@ -27,12 +25,10 @@
                     <td>{{ $product->number }}</td>
                     <td>{{ $product->category }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->unit }}</td>
                     <td>{{ $product->metric }}</td>
                     <td>{{ $product->size }}</td>
                     <td>{{ $product->minimum_stock }}</td>
                     <td>{{ $product->unit_price }}</td>
-                    <td>{{ $product->note }}</td>
                     <td>
                         <a href="{{ route('product.edit', $product) }}">
                             <x-btn-edit>Edit</x-btn-edit>

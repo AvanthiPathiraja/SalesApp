@@ -19,9 +19,9 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('brand_id') ->nullable();
             $table->string('category',70);
             $table->string('name',100);
-            $table->string('unit',15);
+            $table->string('unit',15)->nullable();
             $table->string('metric',20) ->nullable();
-            $table->tinyInteger('size') ->nullable();
+            $table->smallInteger('size') ->nullable();
             $table->smallInteger('minimum_stock') ->nullable();
             $table->decimal('unit_price');
             $table->string('note',150)->nullable();

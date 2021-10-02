@@ -1,4 +1,3 @@
-
 <x-page-body>
     <x-card>
 
@@ -9,8 +8,6 @@
                 <x-text-input wire:model="number" />
                 <x-form-error for="number" />
             </x-lable>
-
-
 
             <x-lable>
                 <span>Title</span>
@@ -94,6 +91,7 @@
                     {{ $employee ? 'Update' : 'Save' }}
                 </x-btn-primary>
             </x-form-footer>
+
         </div>
     </x-card>
 </x-page-body>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIssueReturnsTable extends Migration
+class CreateDiscardedStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateIssueReturnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('issue_returns', function (Blueprint $table) {
+        Schema::create('discarded_stocks', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->unsignedBigInteger('distributor_id');
-            $table->unsignedBigInteger('issue_item_id');
+            $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('stock_id');
             $table->smallInteger('quantity');
             $table->string('reason',70);
-            $table->boolean('is_reusable') ->default('0');
+            $table->string('note',150)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +33,6 @@ class CreateIssueReturnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issue_returns');
+        Schema::dropIfExists('discarded_stocks');
     }
 }

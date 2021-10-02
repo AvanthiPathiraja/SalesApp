@@ -17,8 +17,23 @@ class Stock extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function distributor_stocks()
+    public function issue_items()
     {
-        return $this->hasMany(DistributorStock::class);
+        return $this->hasMany(IssueItem::class);
+    }
+
+    public function invoice_items()
+    {
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function issue_returns()
+    {
+        return $this->hasMany(IssueReturn::class);
+    }
+
+    public function invoice_returns()
+    {
+        return $this->hasMany(InvoiceReturn::class);
     }
 }

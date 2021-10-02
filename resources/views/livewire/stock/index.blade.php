@@ -25,7 +25,7 @@
 
                     <td>{{ $stock->number }}</td>
                     <td>{{ $stock->date }}</td>
-                    <td>{{ "{$stock->product->product_details} {$stock->product->unit_details}" }}</td>
+                    <td>{{ $stock->product->product_details }}</td>
                     <td>{{ $stock->unit_price }}</td>
                     <td>{{ $stock->quantity }}</td>
                     <td>{{ $stock->expire_date }}</td>

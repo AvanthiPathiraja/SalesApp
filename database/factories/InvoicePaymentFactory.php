@@ -22,7 +22,13 @@ class InvoicePaymentFactory extends Factory
     public function definition()
     {
         return [
-            //
-        ];
+            'number' => $this->faker->randomNumber(null,false),
+            'reference' => $this->faker->randomNumber(null,false),
+            'date' => $this->faker->date,
+            'customer_id' => $this->faker->numberBetween(1,1000),
+            'payment_type' => $this->faker->word,
+            'amount' => $this->faker->numberBetween(500,20000),
+            'note' => $this->faker->word,
+       ];
     }
 }

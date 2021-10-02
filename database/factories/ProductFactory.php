@@ -7,22 +7,21 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = Product::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
+
     public function definition()
     {
         return [
-            //
+            'number' => $this->faker->randomNumber(null,false) ,
+            'category' => $this->faker->word,
+            'name' => $this->faker->word,
+            'metric' => $this->faker->randomLetter,
+            'size' => $this->faker->numberBetween(1,10000) ,
+            'minimum_stock' => $this->faker->numberBetween(20,5000),
+            'unit_price' => $this->faker->numberBetween(100,5000)
+
         ];
     }
 }

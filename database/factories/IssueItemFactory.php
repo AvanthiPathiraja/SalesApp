@@ -7,22 +7,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IssueItemFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = IssueItem::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
+
     public function definition()
     {
         return [
-            //
+                'issue_note_id' => $this->faker->numberBetween(1,500),
+                'product_id' => $this->faker->numberBetween(1,1000),
+                'stock_id' => $this->faker->numberBetween(1,3000),
+                'quantity' => $this->faker->numberBetween(10,300)
+
         ];
     }
 }

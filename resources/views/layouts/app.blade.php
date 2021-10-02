@@ -28,10 +28,10 @@
                 {{ $slot }}
             </div>
         </main>
-  
+
         {{-- <div class="min-h-screen bg-gray-800">
             @livewire('navigation-menu')
-            
+
         </div> --}}
 
         @stack('modals')

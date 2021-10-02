@@ -17,10 +17,11 @@ class CreateInvoiceItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('invoice_id');
             $table->unsignedBigInteger('issue_item_id');
+            $table->unsignedBigInteger('stock_id')->nullable();
             $table->decimal('unit_price');
             $table->decimal('unit_discount')->default(0);
             $table->smallInteger('quantity');
-            $table->boolean('is_free')->detault('1');
+            $table->boolean('is_free')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

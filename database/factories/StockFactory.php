@@ -7,22 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StockFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = Stock::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            'number' => $this->faker->randomNumber(null,false),
+            'date' => $this->faker->date,
+            'product_id' => $this->faker->numberBetween(1,2000),
+            'unit_price' => $this->faker->numberBetween(100,5000),
+            'unit_cost' => $this->faker->numberBetween(500,4000),
+            'quantity' => $this->faker->numberBetween(100,50000),
+            'expire_date' => $this->faker->date,
         ];
     }
 }

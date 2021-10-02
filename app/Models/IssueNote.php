@@ -16,6 +16,7 @@ class IssueNote extends Model
     {
         return $this->hasMany(IssueItem::class);
     }
+
     public function distributor()
     {
         return $this->belongsTo(Employee::class,'distributor_id');

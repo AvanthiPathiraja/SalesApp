@@ -45,8 +45,8 @@ class Create extends Component
             'date_of_birth' => 'required|date',
             'nic_number' => 'required|max:12',
             'driving_lisence_number' => 'nullable|max:20',
-            'telephone' => 'required|size:10',
-            'mobile' => 'nullable|size:10',
+            'telephone' => 'required|size:12',
+            'mobile' => 'nullable|size:12',
             'address' => 'required|max:255',
             'email' => 'nullable|email',
             'designation' => 'required'

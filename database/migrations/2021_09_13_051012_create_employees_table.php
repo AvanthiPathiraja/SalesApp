@@ -20,13 +20,13 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name',100);
             $table->string('last_name',100);
             $table->date('date_of_birth');
-            $table->string('nic_number',12);
+            $table->string('nic_number',15);
             $table->string('driving_lisence_number',20) ->nullable();
-            $table->string('telephone',10);
-            $table->string('mobile',10) ->nullable();
+            $table->string('telephone',20);
+            $table->string('mobile',20) ->nullable();
             $table->string('address');
             $table->string('email',100) ->nullable();
-            $table->string('designation',30)->nullable();
+            $table->string('designation',100)->nullable();
             $table->boolean('is_active') ->default('1');
             $table->timestamps();
             $table->softDeletes();

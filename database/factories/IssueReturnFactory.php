@@ -7,22 +7,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IssueReturnFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = IssueReturn::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            'date' => $this->faker->date,
+            'distributor_id' => $this->faker->numberBetween(1,100) ,
+            'issue_item_id' => $this->faker->numberBetween(1,1000) ,
+            'stock_id' => $this->faker->numberBetween(1,1000) ,
+            'quantity' => $this->faker->numberBetween(1,500) ,
+            'reason' => $this->faker->word
+
         ];
     }
 }

@@ -20,7 +20,7 @@ class CreateStocksTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->decimal('unit_price');
             $table->decimal('unit_cost')->nullable();
-            $table->smallInteger('quantity');
+            $table->unsignedBigInteger('quantity');
             $table->date('expire_date')->nullable();
             $table->timestamps();
             $table->softDeletes();

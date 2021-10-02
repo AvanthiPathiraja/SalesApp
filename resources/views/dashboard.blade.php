@@ -7,9 +7,27 @@
 
             <div class="relative md:ml-64 bg-blueGray-50">
 
+                <div>
+                    <a href="{{ route('invoice-payment.index') }}"> Invoice Payments  </a>
+                </div>
+                <div>
+                    <a href="{{ route('invoice-return.index') }}"> Invoice Return  </a>
+                </div>
+                {{-- <div>
+                    <a href="{{ route('issue-return.index') }}"> Issue Return  </a>
+                </div>
+                <div>
+                    <a href="{{ route('discarded-stock.index') }}"> Discarded Stock  </a>
+                </div> --}}
+
                 <!-- Header -->
                 <div class="relative bg-pink-700 md:pt-32 pb-32 pt-12">
                     <div class="px-4 md:px-10 mx-auto w-full">
+
+
+
+
+
                         <div>
                             <!-- Card stats -->
                             <div class="flex flex-wrap">

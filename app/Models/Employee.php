@@ -19,17 +19,30 @@ class Employee extends Model
         return ucfirst($this->title) .' '.ucfirst($this->first_name) . ' ' . ucfirst($this->last_name);
     }
 
-    public function distributor_stocks()
-    {
-        return $this->hasMany(DistributorStock::class);
-    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
     }
+
     public function invoice_returns()
     {
         return $this->hasMany(InvoiceReturn::class);
+    }
+
+    public function issue_notes()
+    {
+        return $this->hasMany(IssueNote::class);
+    }
+
+    public function issue_returns()
+    {
+        return $this->hasMany(IssueReturn::class);
+    }
+
+    public function discarded_stocks()
+    {
+        return $this->hasMany(DiscardedStock::class);
     }
 
 }

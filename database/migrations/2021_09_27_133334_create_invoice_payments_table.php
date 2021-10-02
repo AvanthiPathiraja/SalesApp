@@ -19,9 +19,9 @@ class CreateInvoicePaymentsTable extends Migration
             $table->string('reference',20)->nullable();
             $table->date('date');
             $table->unsignedBigInteger('customer_id');
-            $table->string('payment_type',30);
+            $table->string('payment_type',20);
             $table->decimal('amount');
-            $table->string('note',255);
+            $table->string('note',150)->nullable();
             $table->boolean('is_active')->default('1');
             $table->timestamps();
             $table->softDeletes();

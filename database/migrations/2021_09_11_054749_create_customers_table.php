@@ -19,8 +19,8 @@ class CreateCustomersTable extends Migration
             $table->string('number',15);
             $table->string('name',100);
             $table->string('contacted_person',75) ->nullable();
-            $table->string('telephone',10);
-            $table->string('mobile',10) ->nullable();
+            $table->string('telephone',20);
+            $table->string('mobile',20) ->nullable();
             $table->unsignedBigInteger('route_id') ->nullable();
             $table->string('address',255);
             $table->string('email',100) ->nullable();

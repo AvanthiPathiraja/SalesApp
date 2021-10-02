@@ -7,22 +7,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class IssueNoteFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
+
     protected $model = IssueNote::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            'number' => $this->faker->randomNumber(null,false),
+            'reference' => $this->faker->randomNumber(null,false),
+            'date' => $this->faker->date,
+            'distributor_id' => $this->faker->numberBetween(1,100),
         ];
     }
 }
