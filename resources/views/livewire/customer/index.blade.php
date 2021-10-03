@@ -2,7 +2,7 @@
 
     <x-table-top>
         <div class=" flex space-x-2">
-            <a href="{{ route('customer.index') }}">
+            <a href="{{ route('customer.create') }}">
                 <x-btn-new/>
             </a>
             <x-table-top-title>Clients </x-table-top-title>
