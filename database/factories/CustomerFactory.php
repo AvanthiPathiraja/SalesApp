@@ -14,13 +14,13 @@ class CustomerFactory extends Factory
     {
         return [
             'number' => $this->faker->randomNumber(null,false),
-           'name' => $this->faker->company,
-           'contacted_person' => $this->faker->name,
-           'telephone' => $this->faker->phoneNumber,
-           'mobile' => $this->faker->phoneNumber,
-           'route_id' => $this->faker->numberBetween(1,100),
-           'address' => $this->faker->address,
-           'email' => $this->faker->email,
+            'name' => $this->faker->company,
+            'contacted_person' => $this->faker->name,
+            'telephone' => $this->faker->phoneNumber,
+            'mobile' => $this->faker->phoneNumber,
+            'route_id' => $this->faker->numberBetween(1,100),
+            'address' => $this->faker->address,
+            'email' => $this->faker->email,
         ];
     }
 }

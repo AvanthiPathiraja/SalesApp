@@ -10,7 +10,7 @@ class SearchInput extends Component
 
     public function updated()
     {
-        $this->emitTo('stock.index','search', $this->search);
+        $this->emit('search', $this->search);
     }
 
     public function render()

@@ -18,7 +18,6 @@ class Index extends IssueNoteCreate
     public function search($val)
     {
         $this->search = $val;
-        dd($this->search);
     }
 
     public function render()

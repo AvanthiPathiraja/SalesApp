@@ -11,17 +11,16 @@ class Index extends InvoiceCreate
 {
    use WithPagination;
    public $search;
-   protected $listners = [];
+   protected $listeners = ['search'];
 
    public function search($val)
    {
-       $this->search = '%'.$val.'%';
+       $this->search = $val;
    }
 
     public function render()
     {
-        $invoices = Invoice::where('is_active',1)->paginate(10);
-
+        $invoices = Invoice::where('is_active',1)->where('number', 'LIKE', '%'. $this->search . '%' )->paginate(10);
         return view('livewire.invoice.index')
             ->with(['invoices' => $invoices]);
     }

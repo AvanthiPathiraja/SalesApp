@@ -12,12 +12,11 @@ class Index extends StockCreate
 {
    use WithPagination;
 
-   public $search;
-   protected $listners = ['search'];
+    protected $listeners = ['search'];
+    public $search;
 
     public function search($val)
     {
-        dd(123);
         $this->search = $val;
     }
 

@@ -11,8 +11,9 @@ class Index extends Component
     use WithPagination;
 
     public $search;
-    protected $listners = ['search'];
+    protected $listeners = ['search'];
 
+   
     public function search($val)
     {
         $this->search = '%'.$val.'%';

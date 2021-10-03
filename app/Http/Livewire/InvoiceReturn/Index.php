@@ -12,11 +12,11 @@ class Index extends InvoiceReturnCreate
     use WithPagination;
 
     public $search;
-    protected $listners = [];
+    protected $listeners = ['search'];
 
     public function search($val)
     {
-        $this->search = '%'.$val.'%';
+        $this->search = $val;
     }
 
     public function render()
