@@ -24,7 +24,7 @@ class Index extends ProductCreate
     public function render()
     {
         $products = Product::where('is_active',1)
-            ->where(DB::raw('concat(category,name,metric,size,unit_price)'),'like','%'.$this->search.'%')
+            ->where(DB::raw('concat(number,category,name)'),'like','%'.$this->search.'%')
             ->paginate(10);
 
         return view('livewire.product.index')

@@ -2,10 +2,11 @@
 
 namespace App\Http\Livewire\InvoiceReturn;
 
-use App\Models\InvoiceReturn;
 use Livewire\Component;
-use App\Http\Livewire\InvoiceReturn\Create as InvoiceReturnCreate;
 use Livewire\WithPagination;
+use App\Models\InvoiceReturn;
+use Illuminate\Support\Facades\DB;
+use App\Http\Livewire\InvoiceReturn\Create as InvoiceReturnCreate;
 
 class Index extends InvoiceReturnCreate
 {
@@ -21,7 +22,8 @@ class Index extends InvoiceReturnCreate
 
     public function render()
     {
-        $invoice_returns = InvoiceReturn::paginate(10);
+        $invoice_returns = InvoiceReturn::where(DB::raw('concat(date)'),'like','%'.$this->search.'%')
+            ->paginate(10);
 
         return view('livewire.invoice-return.index')
             ->with(['invoice_returns' => $invoice_returns]);

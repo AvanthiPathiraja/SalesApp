@@ -13,7 +13,7 @@ class Index extends Component
     public $search;
     protected $listeners = ['search'];
 
-   
+
     public function search($val)
     {
         $this->search = '%'.$val.'%';
@@ -21,7 +21,8 @@ class Index extends Component
 
     public function render()
     {
-        $issue_returns = IssueReturn::paginate(10);
+        $issue_returns = IssueReturn::where('date','like','%'.$this->search.'%')
+            ->paginate(10);
 
         return view('livewire.issue-return.index')
             ->with(['issue_returns' => $issue_returns ]);

@@ -2,9 +2,10 @@
 
 namespace App\Http\Livewire\InvoicePayment;
 
-use App\Models\InvoicePayment;
-use App\Http\Livewire\InvoicePayment\Create as InvoicePaymentCreate;
 use Livewire\WithPagination;
+use App\Models\InvoicePayment;
+use Illuminate\Support\Facades\DB;
+use App\Http\Livewire\InvoicePayment\Create as InvoicePaymentCreate;
 
 class Index extends InvoicePaymentCreate
 {
@@ -22,6 +23,7 @@ class Index extends InvoicePaymentCreate
     public function render()
     {
         $invoice_payments = InvoicePayment::where('is_active',1)
+            ->where(DB::raw('concat(number,reference,date)'),'like','%'.$this->search.'%')
             ->paginate(10);
 
         return view('livewire.invoice-payment.index')
