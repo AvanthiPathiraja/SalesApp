@@ -1,4 +1,4 @@
-<button type="submit" {{ $attributes->merge(['class'=>'bg-red-700 text-white p-1 p1-3 pr-3']) }}>
-    {{ $slot }}
+<button type="submit" {{ $attributes->merge(['class'=>'text-red-600 p-1 p1-3 pr-3']) }}>
+    <x-svg-trash />
 </button>
 

@@ -20,20 +20,22 @@
 
         <x-layout.sidebar-link path="{{ route('customer.index') }}" name="Customers" />
         <x-layout.sidebar-link path="{{ route('employee.index') }}" name="Employees" />
-        <x-layout.sidebar-link path="{{ route('product.index') }}" name="Products" />
-
-        <x-layout.sidebar-link path="{{ route('stock.index') }}" name="Stocks" />
+        <x-layout.sidebar-link path="{{ route('product.index') }}" name="Product List" />
+        <x-layout.sidebar-link path="{{ route('stock.index') }}" name="Main Stock" />
         <x-layout.sidebar-link path="{{ route('issue-note.index') }}" name="Stock Issue Notes" />
-
         <x-layout.sidebar-link path="{{ route('invoice.index') }}" name="invoices" />
+        <x-layout.sidebar-link path="{{ route('invoice-payment.index') }}" name="Customer Payments" />
+        <x-layout.sidebar-link path="{{ route('invoice-return.index') }}" name="Customer Returns" />
+        <x-layout.sidebar-link path="{{ route('issue-return.index') }}" name="Distributor Returns" />
+        <x-layout.sidebar-link path="{{ route('discarded-stock.index') }}" name="Discarded Stock" />
 
 
-        <x-layout.dropdown name="Dropdown">
+        {{-- <x-layout.dropdown name="Dropdown">
 
           <x-layout.dropdown-link path="#" name="Link 1" />
           <x-layout.dropdown-link path="#" name="Link 2" />
           <x-layout.dropdown-link path="#" name="Link 3" />
-        </x-layout.dropdown>
+        </x-layout.dropdown> --}}
 
       </nav>
     </div>

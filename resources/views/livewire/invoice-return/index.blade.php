@@ -1,11 +1,16 @@
 <x-page-body>
-    <x-card>
-        <x-table-title>
+
+        <x-table-top>
+            <div class=" flex space-x-2">
             <a href="{{ route('invoice-return.create') }}">
-                <x-btn-new>+</x-btn-new>
+                <x-btn-new/>
             </a>
-            Invoice Returns
-        </x-table-title>
+            <x-table-top-title> Invoice Returns </x-table-top-title>
+        </div>
+        <div>
+            <livewire:search-input>
+        </div>
+        </x-table-top>
 
         <x-table>
             <x-table-head>
@@ -18,11 +23,11 @@
                 <th>Reason</th>
                 <th>Collected Distributor</th>
                 <th></th>
-                <th></th>
             </x-table-head>
+
             <x-table-body>
                 @foreach( $invoice_returns as $invoice_return )
-                <tr>
+                <x-tbody-tr>
                     <td>{{ $invoice_return->invoice->number }}</td>
                     <td>{{ $invoice_return->date }}</td>
                     <td>{{ $invoice_return->invoice->customer->name }}</td>
@@ -32,16 +37,15 @@
                     <td>{{ $invoice_return->reason }}</td>
                     <td>{{ $invoice_return->distributor->full_name }}</td>
                      <td>
-                        <x-btn-delete wire:click.prevent="deleteInvoicePayment({{ $invoice_return }})">
-                            X
-                        </x-btn-delete>
-
+                         <x-tbody-btn-col>
+                        <x-btn-delete wire:click.prevent="deleteInvoiceReturn({{ $invoice_return }})"/>
+                    </x-tbody-btn-col>
                     </td>
-                </tr>
+                </x-tbody-tr>
 
                 @endforeach
             </x-table-body>
         </x-table>
 
-    </x-card>
+   {{ $invoice_returns->links() }}
 </x-page-body>

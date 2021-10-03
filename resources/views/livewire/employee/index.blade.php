@@ -1,12 +1,16 @@
 <x-page-body>
-    <x-card>
 
-        <x-table-title>
-            <a href="{{ route('employee.create') }}">
-                <x-btn-new>+</x-btn-new>
-            </a>
-            Employee List
-        </x-table-title>
+        <x-table-top>
+            <div class=" flex space-x-2">
+                <a href="{{ route('employee.create') }}">
+                    <x-btn-new />
+                </a>
+                <x-table-top-title> Employees </x-table-top-title>
+            </div>
+            <div>
+                <livewire:search-input />
+            </div>
+        </x-table-top>
 
         <x-table>
             <x-table-head>
@@ -15,36 +19,34 @@
                 <th>NIC</th>
                 <th>Telephone</th>
                 <th>Mobile</th>
-                <th>Address</th>
                 <th>Destination</th>
                 <th></th>
-                <th></th>
             </x-table-head>
+
             <x-table-body>
                 @foreach( $employees as $employee )
-                <tr>
+                <x-tbody-tr>
                     <td>{{ $employee->number }}</td>
                     <td>{{ $employee->full_name }}</td>
                     <td>{{ $employee->nic_number }}</td>
                     <td>{{ $employee->telephone }}</td>
                     <td>{{ $employee->mobile }}</td>
-                    <td>{{ $employee->address }}</td>
                     <td>{{ $employee->designation }}</td>
 
                     <td>
+                    <x-tbody-btn-col>
                         <a href="{{ route('employee.edit', $employee) }}">
-                            <x-btn-edit>Edit</x-btn-edit>
+                            <x-btn-edit />
                         </a>
-                    </td>
-                    <td>
-                        <x-btn-delete wire:click.prevent="deleteEmployee({{ $employee }})"> X </x-btn-delete>
 
+                        <x-btn-delete wire:click.prevent="deleteEmployee({{ $employee }})" />
+                    </x-tbody-btn-col>
                     </td>
-                </tr>
+                </x-tbody-tr>
 
                 @endforeach
             </x-table-body>
         </x-table>
+        {{ $employees->links() }}
 
-    </x-card>
 </x-page-body>

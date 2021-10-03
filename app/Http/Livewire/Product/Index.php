@@ -5,20 +5,30 @@ namespace App\Http\Livewire\Product;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use App\Http\Livewire\Product\Create as ProductCreate;
 
 
 class Index extends ProductCreate
 {
-    public $products = [];
+    use WithPagination;
+
+    public $search;
+    protected $listeners = ['search'];
+
+    public function search($val)
+    {
+        $this->search = $val;
+    }
 
     public function render()
     {
-        return view('livewire.product.index');
+        $products = Product::where('is_active',1)
+            ->where(DB::raw('concat(category,name,metric,size,unit_price)'),'like','%'.$this->search.'%')
+            ->paginate(10);
+
+        return view('livewire.product.index')
+            ->with(['products' => $products]);
     }
 
-    public function mount()
-    {
-        $this->products = Product::where('is_active',1)->get();
-    }
 }

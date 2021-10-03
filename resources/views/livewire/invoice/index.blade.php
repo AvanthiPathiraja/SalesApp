@@ -1,11 +1,17 @@
 <x-page-body>
-        <x-card>
-            <x-table-title >
+
+            <x-table-top >
+                <div class=" flex space-x-2">
                 <a href="{{ route('invoice.create') }}">
-                    <x-btn-new>+</x-btn-new>
+                    <x-btn-new/>
                 </a>
-                Invoice List
-            </x-table-title>
+                <x-table-top-title> Invoice List </x-table-top-title>
+            </div>
+            <div>
+                <livewire:search-input/>
+
+            </div>
+            </x-table-top>
 
             <x-table>
                     <x-table-head>
@@ -17,11 +23,11 @@
                         <th>Total Price</th>
                         <th>Total Discounts</th>
                         <th></th>
-                        <th></th>
                     </x-table-head>
+
                   <x-table-body>
                     @foreach( $invoices as $invoice )
-                    <tr>
+                    <x-tbody-tr>
                         <td>{{ $invoice->number }}</td>
                         <td>{{ $invoice->reference }}</td>
                         <td>{{ $invoice->date }}</td>
@@ -31,17 +37,17 @@
                         <td>{{ number_format($invoice->total_discount) }}</td>
 
                         <td>
-                            <a href="{{ route('invoice.edit', $invoice) }}"> <x-btn-edit>Edit</x-btn-edit> </a>
+                            <x-tbody-btn-col>
+                            <a href="{{ route('invoice.edit', $invoice) }}">
+                                <x-btn-edit/>
+                            </a>
+                            <x-btn-delete wire:click.prevent="deleteInvoice({{ $invoice }})"/>
+                        </x-tbody-btn-col>
                         </td>
-                        <td>
-                            <x-btn-delete wire:click.prevent="deleteInvoice({{ $invoice }})"> X </x-btn-delete>
-
-                        </td>
-                    </tr>
+                    </x-tbody-tr>
 
                 @endforeach
             </x-table-body>
                 </x-table>
-
-            </x-card>
+{{ $invoices->links() }}
         </x-page-body>

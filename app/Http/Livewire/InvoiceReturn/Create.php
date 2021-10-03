@@ -86,6 +86,12 @@ class Create extends Component
         }
     }
 
+    public function deleteInvoiceReturn(InvoiceReturn $invoice_return)
+    {
+        $invoice_return->delete();
+        return redirect()->route('invoice-return.index');
+    }
+
     public function render()
     {
         return view('livewire.invoice-return.create');

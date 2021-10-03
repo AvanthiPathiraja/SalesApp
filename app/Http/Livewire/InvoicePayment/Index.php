@@ -4,29 +4,27 @@ namespace App\Http\Livewire\InvoicePayment;
 
 use App\Models\InvoicePayment;
 use App\Http\Livewire\InvoicePayment\Create as InvoicePaymentCreate;
+use Livewire\WithPagination;
 
 class Index extends InvoicePaymentCreate
 {
-    public $invoice_payments = [];
-    public $search_key;
+    use WithPagination;
 
-    public function mount()
-    {
-        $this->invoice_payments = InvoicePayment::where('is_active',1)->get();
-    }
+    public $search;
+    protected $listners = [];
 
-    public function searchPayments()
+    public function search($val)
     {
-        $this->invoice_payments = InvoicePayment::where([
-            ['is_active',1],
-            ['number','like',$this->search_key],
-        ])
-        ->get();
+        $this->search = '%'.$val.'%';
     }
 
 
     public function render()
     {
-        return view('livewire.invoice-payment.index');
+        $invoice_payments = InvoicePayment::where('is_active',1)
+            ->paginate(10);
+
+        return view('livewire.invoice-payment.index')
+            ->with(['invoice_payments' => $invoice_payments]);
     }
 }

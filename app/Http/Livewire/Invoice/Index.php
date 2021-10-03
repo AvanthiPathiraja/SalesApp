@@ -5,18 +5,24 @@ namespace App\Http\Livewire\Invoice;
 use App\Models\Invoice;
 use Livewire\Component;
 use App\Http\Livewire\Invoice\Create as InvoiceCreate;
+use Livewire\WithPagination;
 
 class Index extends InvoiceCreate
 {
-    public $invoices = [];
+   use WithPagination;
+   public $search;
+   protected $listners = [];
 
-    public function mount()
-    {
-         $this->invoices = Invoice::all();
-    }
+   public function search($val)
+   {
+       $this->search = '%'.$val.'%';
+   }
 
     public function render()
     {
-        return view('livewire.invoice.index');
+        $invoices = Invoice::where('is_active',1)->paginate(10);
+
+        return view('livewire.invoice.index')
+            ->with(['invoices' => $invoices]);
     }
 }

@@ -7,12 +7,7 @@
 
             <div class="relative md:ml-64 bg-blueGray-50">
 
-                <div>
-                    <a href="{{ route('invoice-payment.index') }}"> Invoice Payments  </a>
-                </div>
-                <div>
-                    <a href="{{ route('invoice-return.index') }}"> Invoice Return  </a>
-                </div>
+
                 {{-- <div>
                     <a href="{{ route('issue-return.index') }}"> Issue Return  </a>
                 </div>

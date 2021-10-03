@@ -1,3 +1,3 @@
-<button {{ $attributes->merge(['class'=>'bg-purple-800 text-white p-1 p1-3 pr-3 text-center']) }}>
-    {{ $slot }}
+<button {{ $attributes->merge(['class'=>'text-purple-400 p-1 p1-3 pr-3']) }}>
+    <x-svg-edit />
 </button>

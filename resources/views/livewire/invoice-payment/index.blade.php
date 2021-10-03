@@ -1,14 +1,16 @@
 <x-page-body>
-    <x-card>
-        <x-table-title>
-            <a href="{{ route('invoice-payment.create') }}">
-                <x-btn-new>+</x-btn-new>
-            </a>
-            Payment Reciepts
 
-            <x-search-input wire:model="search_key" placeholder="Search"/>
-            <x-btn-primary wire:click.prevent="searchPayments"> Go </x-btn-primary>
-        </x-table-title>
+        <x-table-top>
+            <div class=" flex space-x-2">
+            <a href="{{ route('invoice-payment.create') }}">
+                <x-btn-new/>
+            </a>
+            <x-table-top-title> Payment Reciepts </x-table-top-title>
+        </div>
+        <div>
+            <livewire:search-input/>
+        </div>
+        </x-table-top>
 
         <x-table>
             <x-table-head>
@@ -20,11 +22,12 @@
                 <th>Amount</th>
                 <th>Note</th>
                 <th></th>
-                <th></th>
+
             </x-table-head>
+
             <x-table-body>
                 @foreach( $invoice_payments as $invoice_payment )
-                <tr>
+                <x-tbody-tr>
                     <td>{{ $invoice_payment->number }}</td>
                     <td>{{ $invoice_payment->reference }}</td>
                     <td>{{ $invoice_payment->date }}</td>
@@ -33,15 +36,15 @@
                     <td>{{ $invoice_payment->amount }}</td>
                     <td>{{ $invoice_payment->note }}</td>
                      <td>
-                        <x-btn-delete wire:click.prevent="deleteInvoicePayment({{ $invoice_payment }})"> X
-                        </x-btn-delete>
-
+                         <x-tbody-btn-col>
+                        <x-btn-delete wire:click.prevent="deleteInvoicePayment({{ $invoice_payment }})"/>
+                    </x-tbody-btn-col>
                     </td>
-                </tr>
+                </x-tbody-tr>
 
                 @endforeach
             </x-table-body>
         </x-table>
 
-    </x-card>
+    {{ $invoice_payments->links() }}
 </x-page-body>

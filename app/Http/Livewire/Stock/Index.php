@@ -4,23 +4,31 @@ namespace App\Http\Livewire\Stock;
 
 use App\Models\Stock;
 use Livewire\Component;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use App\Http\Livewire\Stock\Create as StockCreate;
-
 
 class Index extends StockCreate
 {
-    public $stocks=[];
+   use WithPagination;
 
+   public $search;
+   protected $listners = ['search'];
 
-    public function mount()
+    public function search($val)
     {
-        $this->stocks = Stock::all();
+        dd(123);
+        $this->search = $val;
     }
 
     public function render()
     {
 
-        return view('livewire.stock.index');
+        $stocks = Stock::where(DB::raw('concat(number,date)'),'like','%'.$this->search.'%')
+            ->paginate(10);
+
+        return view('livewire.stock.index')
+            ->with(['stocks' => $stocks]);
     }
 
 

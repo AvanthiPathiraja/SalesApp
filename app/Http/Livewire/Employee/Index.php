@@ -4,23 +4,31 @@ namespace App\Http\Livewire\Employee;
 
 use Livewire\Component;
 use App\Models\Employee;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use App\Http\Livewire\Employee\Create as EmployeeCreate;
 
 
 class Index extends EmployeeCreate
 {
-    public $employees=[];
+    use WithPagination;
 
+    public $search;
+    protected $listeners = ['search'];
 
-
-    public function mount()
+    public function search($val)
     {
-        $this->employees=Employee::where('is_active',1)->get();
+        $this->search = $val;
     }
 
     public function render()
     {
-        return view('livewire.employee.index');
+        $employees = Employee::where('is_active',1)
+            ->where(DB::raw('concat(title,first_name,last_name,nic_number,telephone,mobile,designation)'),'like','%'.$this->search.'%')
+            ->paginate(10);
+
+        return view('livewire.employee.index')
+            ->with(['employees' => $employees ]);
     }
 
 }
