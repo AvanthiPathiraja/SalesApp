@@ -3,10 +3,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('issue-note.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Issue Note Info </x-table-top-title>
             </div>
         </x-table-top>
         <div class="grid grid-cols-5 gap-3 gap-x-4">
@@ -44,10 +44,10 @@
 
         </div>
 
-        <div class="grid grid-cols-5 gap-3 gap-x-4 p-2">
+        <div class="grid grid-cols-5 gap-3 gap-x-4 p-2 mt-2">
 
             <x-lable class="col-span-3">
-                <span>Product details</span>
+                <span>Product</span>
                 <x-select wire:model="product_id">
                     <option value=""></option>
                     @foreach ( $products as $product )
@@ -91,17 +91,16 @@
 
             <x-form-footer class="col-span-5">
                 <x-flash-msg type="success" key="successIssueItem" />
-                <x-flash-msg type="error" key="errorIssueItem" />
+                <x-flash-msg type="error" key="errorIssueItemDupplicate" />
+                <x-flash-msg type="error" key="errorIssueItemQuantity" />
                 <x-btn-primary wire:click='addIssueItemToList()'> Add </x-btn-primary>
             </x-form-footer>
 
         </div>
 
-        <x-table-title>
-            Issue Items List
-        </x-table-title>
+        <x-table-top-title> Issue Items List </x-table-top-title>
 
-        <x-table>
+        <x-table class=" mt-3 mb-3">
             <x-table-head>
                 <th>Stock Batch</th>
                 <th>Product Details</th>
@@ -138,7 +137,7 @@
             <x-flash-msg type="success" key="successIssueNote" />
             <x-flash-msg type="error" key="errorIssueNote" />
             <x-btn-primary wire:click='saveOrUpdateIssueNote()'>
-                {{ $issue_note ? 'Update' : 'Save' }}
+                {{ $issue_note ? 'Update Issue Note' : 'Save Issue Note' }}
             </x-btn-primary>
         </x-form-footer>
 

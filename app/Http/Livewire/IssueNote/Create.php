@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\IssueItem;
 use App\Models\IssueNote;
+use App\View\Components\FlashMsg;
 
 class Create extends Component
 {
@@ -29,10 +30,8 @@ class Create extends Component
     public function mount()
     {
         $this->products = Product::where('is_active',1)->get();
-        $this->distributors = Employee::where([
-            ['designation','=','Distributor'],
-            ['is_active','=','1'],
-        ])->get();
+        $this->distributors = Employee::where('is_active',1)->get();
+        $this->date = date('y-m-d');
 
         if($this->issue_note)
         {
@@ -58,15 +57,12 @@ class Create extends Component
                     'line_total' => $issue_item->quantity * $issue_item->stock->unit_price,
                 ];
             }
-
-
         }
     }
 
     public function updatedProductId()
     {
         $this->reset(['expire_date','available_quantity','unit_price','quantity']);
-
         if($this->product_id)
         {
             $this->stocks = Stock::where('product_id',$this->product_id)->get();
@@ -76,7 +72,6 @@ class Create extends Component
     public function updatedStockId()
     {
         $this->reset(['expire_date','available_quantity','unit_price','quantity']);
-
         if($this->stock_id)
         {
             $stock = Stock::find($this->stock_id);
@@ -91,17 +86,23 @@ class Create extends Component
 
     public function addIssueItemToList()
     {
-        $validated_data = $this->validate([
+        $this->validate([
             'product_id' => 'required|numeric',
             'stock_id' => 'required|numeric',
             'quantity' => 'required|numeric|min:1',
-
         ]);
 
+        $dupplicate_stock_id_count = collect($this->issue_items)->where('stock_id',$this->stock_id)->count('stock_id');
 
-        if($this->quantity > $this->available_quantity)
+        if($dupplicate_stock_id_count > 0)
         {
-            session()->flash('errorIssueItem','Invalid quantity. Please try again !');
+            session()->flash('errorIssueItemDupplicate','Already in the list. Please try again !');
+        }
+        else
+        {
+            if($this->quantity > $this->available_quantity)
+        {
+            session()->flash('errorIssueItemQuantity','Invalid quantity. Please try again !');
         }
         else
         {
@@ -112,7 +113,7 @@ class Create extends Component
                 'product_id' => $this->product_id,
                 'stock_id' => $this->stock_id,
                 'stock_number' => $selected_stock->number,
-                'product_details' => "{$selected_product->product_details} {$selected_product->unit_details}",
+                'product_details' => $selected_product->product_details,
                 'unit_price' => $this->unit_price,
                 'quantity' => $this->quantity,
                 'line_total' => $this->quantity * $this->unit_price,
@@ -121,12 +122,14 @@ class Create extends Component
             $this->reset(['product_id','stock_id','expire_date','available_quantity','unit_price','quantity']);
             session()->flash('successIssueItem','Completed Successfully !');
         }
-
+        }
     }
 
     public function removeIssueItemFromList($key)
     {
         unset($this->issue_items[$key]);
+        $this->reset(['product_id','stock_id','expire_date','available_quantity','unit_price','quantity']);
+
     }
 
     public function saveOrUpdateIssueNote()
@@ -151,7 +154,6 @@ class Create extends Component
         {
             session()->flash('errorIssueNote','No items in the list. Please try again !');
         }
-
     }
 
     public function deleteIssueNote(IssueNote $issue_note)
