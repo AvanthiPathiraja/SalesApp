@@ -29,12 +29,9 @@ class Index extends IssueNoteCreate
                     ->orWhere('date','like','%'.$this->search.'%')
                     ->orWhere('reference','like','%'.$this->search.'%');
             })
-            ->orWhere(function($distributor){
-                $distributor
-                ->whereHas('distributor',function($distributor1){
-                    $distributor1
+            ->orWhereHas('distributor',function($distributor){
+                    $distributor
                         ->where(DB::raw('concat(title," ",first_name," ",last_name)'),'like','%'.$this->search.'%');
-                });
             })
             ->paginate(10);
 
