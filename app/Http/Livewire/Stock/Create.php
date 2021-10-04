@@ -20,6 +20,7 @@ class Create extends Component
     public function mount()
     {
         $this->products = Product::where('is_active',1)->get();
+        $this->date = date('Y-m-d');
 
         if($this->stock)
         {
@@ -57,7 +58,7 @@ class Create extends Component
 
         Stock::updateOrCreate(['id'=>$this->stock_id ?? null],$validated_data);
         session()->flash('success','Successfully inserted !');
-        return redirect()->route('stock.index');
+       // return redirect()->route('stock.index');
 
     }
 

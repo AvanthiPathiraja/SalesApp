@@ -2,10 +2,10 @@
     <x-card>
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('stock.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Stock Batch Info </x-table-top-title>
             </div>
         </x-table-top>
         <div class="grid grid-cols-5 gap-3 gap-x-4">
