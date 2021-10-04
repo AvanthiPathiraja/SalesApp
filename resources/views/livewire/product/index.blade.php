@@ -7,7 +7,16 @@
             </a>
             <x-table-top-title> Product List </x-table-top-title>
         </div>
-        <div>
+        <div class=" flex space-x-2">
+            <x-select wire:model="category" >
+                <option value=""> Select a category </option>
+                @foreach ($categories as $category)
+                    <option value="">
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </x-select>
+
             <livewire:search-input />
         </div>
     </x-table-top>
