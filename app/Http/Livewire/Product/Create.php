@@ -9,7 +9,7 @@ class Create extends Component
 {
     public $product;
     public $product_id;
-    public $number,$brand_id,$category,$name,$unit,$metric,$size,$minimum_stock,$unit_price,$note;
+    public $number,$brand_id,$category,$name,$metric,$size,$minimum_stock,$unit_price,$note;
 
 
     public function mount()
@@ -23,7 +23,6 @@ class Create extends Component
             $this->brand_id = $this->product->brand_id;
             $this->category = $this->product->category;
             $this->name = $this->product->name;
-            $this->unit = $this->product->unit;
             $this->metric = $this->product->metric;
             $this->size = $this->product->size;
             $this->minimum_stock = $this->product->minimum_stock;
@@ -38,7 +37,6 @@ class Create extends Component
             'brand_id' => 'nullable',
             'category' => 'required|max:70',
             'name' => 'required|max:100',
-            'unit' => 'required|max:20',
             'metric' => 'nullable|max:70',
             'size' => 'nullable|numeric',
             'minimum_stock' => 'nullable|numeric',
@@ -48,7 +46,7 @@ class Create extends Component
 
         Product::updateOrCreate(['id'=>$this->product_id ?? null],$validated_data);
         session()->flash('success','Successfully inserted !');
-        return redirect()->route('product.index');
+        //return redirect()->route('product.index');
 
     }
 
@@ -60,7 +58,7 @@ class Create extends Component
 
     public function form_reset()
     {
-        $this->reset(['number','brand_id','category','name','unit','metric','size','minimum_stock','unit_price']);
+        $this->reset(['number','brand_id','category','name','metric','size','minimum_stock','unit_price']);
     }
 
     public function render()

@@ -3,10 +3,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('product.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Product Info </x-table-top-title>
             </div>
         </x-table-top>
         <div class="grid grid-cols-6 gap-3 gap-x-4">
@@ -23,22 +23,10 @@
             <x-form-error for="category" />
         </x-lable>
 
-        <x-lable  class=" col-span-2">
+        <x-lable  class=" col-span-3">
             <span>Name</span>
             <x-text-input wire:model="name" />
             <x-form-error for="name" />
-        </x-lable>
-
-        <x-lable>
-            <span>Unit</span>
-            <x-select wire:model="unit">
-                <option value=""></option>
-                <option value="Packet"> Packet </option>
-                <option value="Bottle"> Bottle </option>
-                <option value="Box"> Box </option>
-                <option value="Unit"> Unit </option>
-             </x-select>
-            <x-form-error for="unit" />
         </x-lable>
 
         <x-lable>
