@@ -24,7 +24,7 @@ class Index extends EmployeeCreate
     public function render()
     {
         $employees = Employee::where('is_active',1)
-            ->where(DB::raw('concat(title,first_name,last_name,nic_number,telephone,mobile,designation)'),'like','%'.$this->search.'%')
+            ->where(DB::raw('concat(title,first_name,last_name,nic_number,telephone,designation)'),'like','%'.$this->search.'%')
             ->paginate(10);
 
         return view('livewire.employee.index')

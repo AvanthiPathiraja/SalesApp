@@ -36,16 +36,32 @@ class Index extends CustomerCreate
         $customers = '';
         if($this->route_id)
         {
-            $customers = Customer::where(DB::raw('concat(number,name,contacted_person,telephone,mobile)'), 'LIKE', '%' . $this->search . '%')
-                ->where('is_active',1)
-                ->where('route_id',$this->route_id)
+            $customers = Customer::where('is_active',1)
+                ->where(function ($customer){
+                    $customer
+                        ->where('number','like','%'.$this->search.'%')
+                        ->orWhere('name','like','%'.$this->search.'%')
+                        ->orWhere('contacted_person','like','%'.$this->search.'%')
+                        ->orWhere('telephone','like','%'.$this->search.'%')
+                        ->orWhere('mobile','like','%'.$this->search.'%');
+                })
+                ->whereHas('route',function ($route) {
+                    $route->where('id',$this->route_id);
+                })
                 ->paginate(10);
         }
         else
         {
-            $customers = Customer::where(DB::raw('concat(number,name,contacted_person,telephone,mobile)'), 'LIKE', '%' . $this->search . '%')
-                ->where('is_active',1)
-                ->paginate(10);
+            $customers = Customer::where('is_active',1)
+            ->where(function ($customer){
+                $customer
+                    ->where('number','like','%'.$this->search.'%')
+                    ->orWhere('name','like','%'.$this->search.'%')
+                    ->orWhere('contacted_person','like','%'.$this->search.'%')
+                    ->orWhere('telephone','like','%'.$this->search.'%')
+                    ->orWhere('mobile','like','%'.$this->search.'%');
+            })
+            ->paginate(10);
         }
 
         return view('livewire.customer.index')->with([
