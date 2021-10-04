@@ -28,27 +28,18 @@ class Index extends Component
             ->orWhere('quantity','like','%'.$this->search.'%')
             ->orWhere('reason','like','%'.$this->search.'%');
         })
-        ->orWhere(function($related_data){
-            $related_data
-            ->whereHas('distributor',function ($distributor){
+        ->orWhereHas('distributor',function ($distributor){
                 $distributor
                 ->where(DB::raw('concat(title," ",first_name," ",last_name)'),'like','%'.$this->search.'%');
-            });
         })
-        ->orWhere(function($related_data){
-            $related_data
-            ->whereHas('stock',function ($stock){
+        ->orWhereHas('stock',function ($stock){
                 $stock
                 ->where('number','like','%'.$this->search.'%')
-                ->orWhere(function($related_data){
-                    $related_data
-                    ->whereHas('product',function($product){
+                ->orWhereHas('product',function($product){
                         $product
                         ->where('category','like','%'.$this->search.'%')
                         ->orWhere('name','like','%'.$this->search.'%');
                     });
-                });
-            });
         })
 
 
