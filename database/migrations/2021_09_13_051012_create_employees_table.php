@@ -19,8 +19,8 @@ class CreateEmployeesTable extends Migration
             $table->string('title',10);
             $table->string('first_name',100);
             $table->string('last_name',100);
-            $table->date('date_of_birth');
-            $table->string('nic_number',15);
+            $table->date('date_of_birth')->nullable();
+            $table->string('nic_number',15)->nullable();
             $table->string('driving_lisence_number',20) ->nullable();
             $table->string('telephone',20);
             $table->string('mobile',20) ->nullable();

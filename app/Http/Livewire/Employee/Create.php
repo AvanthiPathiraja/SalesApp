@@ -42,19 +42,19 @@ class Create extends Component
             'title' => 'required|max:10',
             'first_name' => 'required|max:100',
             'last_name' => 'required|max:100',
-            'date_of_birth' => 'required|date',
-            'nic_number' => 'required|max:12',
+            'date_of_birth' => 'nullable|date',
+            'nic_number' => 'nullable|max:12',
             'driving_lisence_number' => 'nullable|max:20',
-            'telephone' => 'required|size:12',
-            'mobile' => 'nullable|size:12',
+            'telephone' => 'required|size:10',
+            'mobile' => 'nullable|size:10',
             'address' => 'required|max:255',
             'email' => 'nullable|email',
-            'designation' => 'required'
+            'designation' => 'required|max:100'
         ]);
 
         Employee::updateOrCreate(['id'=>$this->employee_id ?? null],$validated_data);
         session()->flash('success','Successfully completed !');
-        return redirect()->route('employee.index');
+        //return redirect()->route('employee.index');
     }
 
     public function deleteEmployee(Employee $employee)

@@ -3,10 +3,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('employee.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Employee Info </x-table-top-title>
             </div>
         </x-table-top>
 
