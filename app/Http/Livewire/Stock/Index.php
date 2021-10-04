@@ -23,8 +23,25 @@ class Index extends StockCreate
     public function render()
     {
 
-        $stocks = Stock::where(DB::raw('concat(number,date)'),'like','%'.$this->search.'%')
-            ->paginate(10);
+        $stocks = Stock::where(function($stock){
+            $stock
+                ->whereDate('date','like','%'.$this->search.'%')
+                ->orWhere('number','like','%'.$this->search.'%')
+                ->orWhere('quantity','like','%'.$this->search.'%')
+                ->orWhere('unit_price','like','%'.$this->search.'%')
+                ->orWhereDate('expire_date','like','%'.$this->search.'%');
+        })
+        ->orWhere(function($product){
+            $product
+            ->whereHas('product',function($product1){
+                $product1
+                    ->where('category','like','%'.$this->search.'%')
+                    ->orWhere('name','like','%'.$this->search.'%');
+
+            });
+        })
+
+        ->paginate(10);
 
         return view('livewire.stock.index')
             ->with(['stocks' => $stocks]);

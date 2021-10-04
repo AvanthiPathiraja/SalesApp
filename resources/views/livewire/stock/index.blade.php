@@ -7,7 +7,12 @@
             </a>
             <x-table-top-title> Main Stock </x-table-top-title>
         </div>
-        <div>
+        <div class=" flex space-x-2">
+            <x-select wire:model="category">
+                <option value=""></option>
+                <option value=""></option>
+                <option value=""></option>
+            </x-select>
             <livewire:search-input />
         </div>
         </x-table-top>
@@ -16,7 +21,8 @@
             <x-table-head>
                 <th>Batch Number</th>
                 <th>Date</th>
-                <th>Product</th>
+                <th>Category</th>
+                <th>Name</th>
                 <th>Unit Price</th>
                 <th>Quantity</th>
                 <th>Expire Date</th>
@@ -29,7 +35,8 @@
 
                     <td>{{ $stock->number }}</td>
                     <td>{{ $stock->date }}</td>
-                    <td>{{ $stock->product->product_details }}</td>
+                    <td>{{ $stock->product->category }}</td>
+                    <td>{{ $stock->product->name }}</td>
                     <td>{{ number_format($stock->unit_price,2) }}</td>
                     <td>{{ $stock->quantity }}</td>
                     <td>{{ $stock->expire_date }}</td>

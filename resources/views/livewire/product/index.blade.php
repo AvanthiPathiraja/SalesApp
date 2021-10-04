@@ -11,7 +11,7 @@
             <x-select wire:model="category" >
                 <option value=""> Select a category </option>
                 @foreach ($categories as $category)
-                    <option value="">
+                    <option value="{{ $category->name }}">
                         {{ $category->name }}
                     </option>
                 @endforeach
