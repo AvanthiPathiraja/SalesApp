@@ -17,6 +17,7 @@
             <th>Date</th>
             <th>Employee</th>
             <th>Batch Number</th>
+            <th>Category</th>
             <th>Product</th>
             <th>Quantity Discarded</th>
             <th>Reason</th>
@@ -29,7 +30,8 @@
                 <td>{{ $discarded_stock->date }}</td>
                 <td>{{ $discarded_stock->employee->full_name }}</td>
                 <td>{{ $discarded_stock->stock->number }}</td>
-                <td>{{ $discarded_stock->stock->product->product_details }}</td>
+                <td>{{ $discarded_stock->stock->product->category }}</td>
+                <td>{{ $discarded_stock->stock->product->name }}</td>
                 <td>{{ $discarded_stock->quantity }}</td>
                 <td>{{ $discarded_stock->reason }}</td>
 

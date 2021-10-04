@@ -21,8 +21,26 @@ class Index extends Component
 
     public function render()
     {
-        $discarded_stocks = DiscardedStock::where(DB::raw('concat(date)'),'like','%'.$this->search.'%')
-            ->paginate(10);
+        $discarded_stocks = DiscardedStock::where(function($discarded_stock){
+            $discarded_stock
+            ->where('date','like','%'.$this->search.'%')
+            ->orWhere('quantity','like','%'.$this->search.'%')
+            ->orWhere('reason','like','%'.$this->search.'%');
+        })
+        ->orWhereHas('employee',function($employee){
+            $employee
+            ->where(DB::raw('concat(title," ",first_name," ",last_name)'),'like','%'.$this->search.'%');
+        })
+        ->orWhereHas('stock',function($stock){
+            $stock
+            ->where('number','like','%'.$this->search.'%')
+            ->orWhereHas('product',function($product){
+                $product
+                ->where('category','like','%'.$this->search.'%')
+                ->orWhere('name','like','%'.$this->search.'%');
+            });
+        })
+        ->paginate(10);
 
         return view('livewire.discarded-stock.index')
             ->with(['discarded_stocks' => $discarded_stocks]);
