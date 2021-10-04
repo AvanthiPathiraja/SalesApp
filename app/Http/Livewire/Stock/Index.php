@@ -31,16 +31,11 @@ class Index extends StockCreate
                 ->orWhere('unit_price','like','%'.$this->search.'%')
                 ->orWhereDate('expire_date','like','%'.$this->search.'%');
         })
-        ->orWhere(function($product){
-            $product
-            ->whereHas('product',function($product1){
-                $product1
+        ->orWhereHas('product',function($product){
+                $product
                     ->where('category','like','%'.$this->search.'%')
                     ->orWhere('name','like','%'.$this->search.'%');
-
-            });
         })
-
         ->paginate(10);
 
         return view('livewire.stock.index')
