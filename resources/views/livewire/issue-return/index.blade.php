@@ -17,6 +17,7 @@
             <th>Date</th>
             <th>Distributor</th>
             <th>Batch Number</th>
+            <th>Category</th>
             <th>Product</th>
             <th>Quantity Returned</th>
             <th>Reason</th>
@@ -29,7 +30,8 @@
                 <td>{{ $issue_return->date }}</td>
                 <td>{{ $issue_return->distributor->full_name }}</td>
                 <td>{{ $issue_return->stock->number }}</td>
-                <td>{{ $issue_return->stock->product->product_details }}</td>
+                <td>{{ $issue_return->stock->product->category }}</td>
+                <td>{{ $issue_return->stock->product->name }}</td>
                 <td>{{ $issue_return->quantity }}</td>
                 <td>{{ $issue_return->reason }}</td>
 
