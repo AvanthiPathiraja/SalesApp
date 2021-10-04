@@ -19,6 +19,7 @@
       <nav :class="{'block': open, 'hidden': !open}" class="flex-grow md:block px-4 pb-4 md:pb-0 md:overflow-y-auto">
 
         <x-layout.sidebar-link path="{{ route('customer.index') }}" name="Customers" />
+        <x-layout.sidebar-link path="{{ route('route.index') }}" name="Route List" />
         <x-layout.sidebar-link path="{{ route('employee.index') }}" name="Employees" />
         <x-layout.sidebar-link path="{{ route('product.index') }}" name="Product List" />
         <x-layout.sidebar-link path="{{ route('stock.index') }}" name="Main Stock" />

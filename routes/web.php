@@ -71,4 +71,6 @@ Route::get('discarded/stocks', \App\Http\Livewire\Discardedstock\Index::class)->
 Route::get('discarded/stock/create', \App\Http\Livewire\Discardedstock\Create::class)->name('discarded-stock.create');
 Route::get('discarded/stocks{discarded_stock}/edit', \App\Http\Livewire\Discardedstock\Create::class)->name('discarded-stock.edit');
 
-
+Route::get('routes', \App\Http\Livewire\Route\Index::class)->name('route.index');
+Route::get('route/create', \App\Http\Livewire\Route\Create::class)->name('route.create');
+Route::get('routes/{route}/edit', \App\Http\Livewire\Route\Create::class)->name('route.edit');
