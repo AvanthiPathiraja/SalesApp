@@ -18,6 +18,7 @@
                 <th>Date</th>
                 <th>Customer</th>
                 <th>Batch Number</th>
+                <th>Category</th>
                 <th>Product</th>
                 <th>Quantity Returned</th>
                 <th>Reason</th>
@@ -32,7 +33,8 @@
                     <td>{{ $invoice_return->date }}</td>
                     <td>{{ $invoice_return->invoice->customer->name }}</td>
                     <td>{{ $invoice_return->stock->number }}</td>
-                    <td>{{ $invoice_return->stock->product->product_details }}</td>
+                    <td>{{ $invoice_return->stock->product->category }}</td>
+                    <td>{{ $invoice_return->stock->product->name }}</td>
                     <td>{{ $invoice_return->quantity }}</td>
                     <td>{{ $invoice_return->reason }}</td>
                     <td>{{ $invoice_return->distributor->full_name }}</td>
