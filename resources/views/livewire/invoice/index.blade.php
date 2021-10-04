@@ -32,7 +32,7 @@
                         <td>{{ $invoice->reference }}</td>
                         <td>{{ $invoice->date }}</td>
                         <td>{{ $invoice->customer->name }}</td>
-                        <td>{{ $invoice->distributor_id }}</td>
+                        <td>{{ $invoice->distributor->full_name }}</td>
                         <td>{{ $invoice->total_price }}</td>
                         <td>{{ number_format($invoice->total_discount) }}</td>
 

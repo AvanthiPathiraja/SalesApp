@@ -22,8 +22,25 @@ class Index extends InvoiceCreate
     public function render()
     {
         $invoices = Invoice::where('is_active',1)
-            ->where(DB::raw('concat(number,reference,date)'), 'LIKE', '%'. $this->search . '%' )
+            ->where(function($invoice){
+                $invoice
+                ->where('number', 'LIKE', '%'. $this->search . '%' )
+                ->orWhere('reference', 'LIKE', '%'. $this->search . '%' )
+                ->orWhere('date', 'LIKE', '%'. $this->search . '%' )
+                ->orWhere('total_price', 'LIKE', '%'. $this->search . '%' )
+                ->orWhere('total_discount', 'LIKE', '%'. $this->search . '%' );
+            })
+            ->orWhereHas('customer',function($customer){
+                $customer
+                ->where('name', 'LIKE', '%'. $this->search . '%' );
+
+            })
+            ->orWhereHas('distributor',function($distributor){
+                $distributor
+                ->where(DB::raw('concat(title," ",first_name," ",last_name)'), 'LIKE', '%'. $this->search . '%' );
+            })
             ->paginate(10);
+
         return view('livewire.invoice.index')
             ->with(['invoices' => $invoices]);
     }
