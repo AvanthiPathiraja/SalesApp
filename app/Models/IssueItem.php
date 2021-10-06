@@ -28,8 +28,8 @@ class IssueItem extends Model
         return $this->belongsTo(Stock::class);
     }
 
-    public function issue_return()
+    public function distributor()
     {
-        return $this->hasOne(IssueReturn::class);
+        return $this->morphToMany(Employee::class,"distributable");
     }
 }

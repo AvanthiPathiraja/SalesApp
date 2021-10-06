@@ -21,8 +21,5 @@ class InvoiceItem extends Model
         return $this->hasMany(InvoiceReturn::class);
     }
 
-    public function distributor_stock()
-    {
-        return $this->belongsTo(DistributorStock::class);
-    }
+
 }

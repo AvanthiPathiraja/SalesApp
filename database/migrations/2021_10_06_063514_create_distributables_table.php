@@ -15,6 +15,9 @@ class CreateDistributablesTable extends Migration
     {
         Schema::create('distributables', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('distributor_id');
+            $table->unsignedBigInteger('distributable_id');
+            $table->string('distributable_type');
             $table->timestamps();
         });
     }

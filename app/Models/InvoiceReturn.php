@@ -13,11 +13,6 @@ class InvoiceReturn extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function distributor()
-    {
-        return $this->belongsTo(Employee::class,'distributor_id');
-    }
-
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
@@ -31,5 +26,10 @@ class InvoiceReturn extends Model
     public function stock()
     {
         return $this->belongsTo(Stock::class);
+    }
+
+    public function distributor()
+    {
+        return $this->morphToMany(Employee::class,"distributable");
     }
 }
