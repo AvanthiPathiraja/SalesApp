@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\IssueItem;
 use App\Models\InvoiceItem;
 use App\Models\DistributorStock;
+use App\Models\InvoiceReturn;
 use App\Models\IssueNote;
 use Illuminate\Support\Facades\DB;
 
@@ -17,20 +18,20 @@ class Create extends Component
 {
     public $customers = [];
     public $customer_id;
-
     public $distributors = [];
     public $distributor_id;
 
-    public $issue_items = [];
+    public $issue_item_stock = [];
     public $issue_item_id;
-
+    public $invoice_return_stock = [];
+    public $invoice_return_id;
+    public $quantity_available_for_sale;
 
     public $invoice, $invoice_id, $number,$reference, $date, $total_price,$total_discount;
 
     public $invoice_items = [];
     public $invoice_item_id,$unit_price,$unit_discount,$quantity,$is_free;
 
-    public $issue_item,$distributor_stock_balance;
 
     public function mount()
     {
@@ -58,14 +59,14 @@ class Create extends Component
             foreach($selected_invoice_items as $invoice_item)
             {
                 $this->invoice_items[] = [
-                    'issue_item_id' => $invoice_item->distributor_stock_id,
-                    'product_details' => "{$invoice_item->issue_item->stock->number} - {$invoice_item->issue_item->product->product_details}",
-                    'unit_price' => $invoice_item->sold_price,
-                    'unit_discount' => $invoice_item->discount,
+                    'stock_id' => $invoice_item->stock_id,
+                    'product_details' => "{$invoice_item->stock->number} - {$invoice_item->stock->product->product_details}",
+                    'unit_price' => $invoice_item->unit_price,
+                    'unit_discount' => $invoice_item->unit_discount,
                     'quantity' =>   $invoice_item->quantity,
                     'is_free' => $invoice_item->is_free,
-                    'discount_total' =>   ($invoice_item->quantity * $invoice_item->discount),
-                    'line_total' =>   ($invoice_item->quantity * ($invoice_item->sold_price - $invoice_item->discount))
+                    'discount_total' =>   ($invoice_item->quantity * $invoice_item->unit_discount),
+                    'line_total' =>   ($invoice_item->quantity * ($invoice_item->unit_price - $invoice_item->unit_discount))
                 ];
             }
             $this->total_price = collect($this->invoice_items)->sum('line_total');
@@ -77,9 +78,24 @@ class Create extends Component
     {
         if($this->distributor_id)
         {
-            $this->issue_items = IssueItem::whereHas('issue_note',function($issue_note){
+            $this->issue_item_stock = IssueItem::whereHas('issue_note',function($issue_note){
                 $issue_note
                 ->where('distributor_id',$this->distributor_id);
+            })
+            ->where(function($issue_item){
+                $issue_item
+                ->where('is_cleared',0);
+            })
+            ->get();
+
+            $this->invoice_return_stock = InvoiceReturn::whereHas('invoice',function($invoice){
+                $invoice
+                ->where('distributor_id',$this->distributor_id);
+            })
+            ->where(function($invoice_return){
+                $invoice_return
+                ->where('is_cleared',0)
+                ->where('is_reusable',1);
             })
             ->get();
         }
@@ -91,9 +107,9 @@ class Create extends Component
         {
             $this->issue_item = collect($this->issue_items)->where('id',$id)->first();
             $issue_item_quantity = $this->issue_item->quantity;
-            $invoiced_item_total = InvoiceItem::where('issue_item_id',$this->issue_item_id)->sum('quantity');
-            $this->distributor_stock_balance = $issue_item_quantity - $invoiced_item_total;
+            $invoiced_item_quantity = InvoiceItem::where('issue_item_id',$this->issue_item_id)->sum('quantity');
 
+            $this->quantity_available_for_sale = $issue_item_quantity - $invoiced_item_quantity;
             $this->unit_price = $this->issue_item->stock->unit_price;
         }
     }

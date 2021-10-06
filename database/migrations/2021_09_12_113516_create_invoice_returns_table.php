@@ -23,6 +23,7 @@ class CreateInvoiceReturnsTable extends Migration
             $table->smallInteger('quantity');
             $table->string('reason',70);
             $table->boolean('is_reusable') ->default('0');
+            $table->boolean('is_cleared')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

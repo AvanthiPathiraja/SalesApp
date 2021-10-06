@@ -19,6 +19,7 @@ class CreateIssueItemsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('stock_id');
             $table->smallInteger('quantity');
+            $table->boolean('is_cleared')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

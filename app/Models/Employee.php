@@ -25,11 +25,6 @@ class Employee extends Model
         return $this->hasMany(Invoice::class);
     }
 
-    public function invoice_returns()
-    {
-        return $this->hasMany(InvoiceReturn::class);
-    }
-
     public function issue_notes()
     {
         return $this->hasMany(IssueNote::class);
@@ -43,6 +38,16 @@ class Employee extends Model
     public function discarded_stocks()
     {
         return $this->hasMany(DiscardedStock::class);
+    }
+
+    public function issue_items()
+    {
+        return $this->morphedByMany(IssueItem::class, 'distributable');
+    }
+
+    public function invoice_returns()
+    {
+        return $this->morphedByMany(InvoiceReturn::class, 'distributable');
     }
 
 }

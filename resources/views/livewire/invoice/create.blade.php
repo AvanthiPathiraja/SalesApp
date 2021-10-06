@@ -58,16 +58,22 @@
             </x-lable>
 
             <x-lable class=" col-span-4">
-                <span>Invoiced Product</span>
-                <x-select wire:model="issue_item_id">
+                <span>Product</span>
+                <x-select wire:model="stock_id">
                     <option value=""></option>
-                    @foreach ( $issue_items as $issue_item )
-                    <option value="{{ $issue_item->id }}">
-                        {{ $issue_item->product->product_details }}
+                    @foreach ( $issue_item_stock as $item )
+                    <option value="{{ $item->id }}">
+                        {{ $item->product->product_details }}
                     </option>
                     @endforeach
                 </x-select>
                 <x-form-error for='issue_item_id' />
+            </x-lable>
+
+            <x-lable>
+                <span>Unit Price</span>
+                <x-text-input wire:model="unit_price" />
+                <x-form-error for='unit_price' />
             </x-lable>
 
             <x-lable>

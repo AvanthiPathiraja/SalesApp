@@ -7,6 +7,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use App\Http\Livewire\Invoice\Create as InvoiceCreate;
+use App\Models\InvoiceReturn;
 
 class Index extends InvoiceCreate
 {
