@@ -5,10 +5,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('invoice.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Invoice Info </x-table-top-title>
             </div>
         </x-table-top>
         <div class="grid grid-cols-5 gap-3 gap-x-4">
@@ -63,7 +63,7 @@
                     <option value=""></option>
                     @foreach ( $issue_items as $issue_item )
                     <option value="{{ $issue_item->id }}">
-                        {{ "{$issue_item->category} {$issue_item->name}" }}
+                        {{ $issue_item->product->product_details }}
                     </option>
                     @endforeach
                 </x-select>
@@ -102,16 +102,13 @@
 
         </div>
 
-        <x-table-title>
-            Invoice Item List
-        </x-table-title>
+        <x-table-top-title> Invoice Item List </x-table-top-title>
 
-        <x-table>
+        <x-table class=" mt-3 mb-3">
             <x-table-head>
                 <th>Product</th>
-                <th>Unit</th>
-                <th>Sold Price</th>
-                <th>Discount</th>
+                <th>Unit Price</th>
+                <th>Unit Discount</th>
                 <th>Quantity</th>
                 <th>Is free</th>
                 <th>Total</th>
@@ -123,7 +120,6 @@
                 @foreach ( $invoice_items as $key => $item )
                 <tr>
                     <td> {{ $item['product_details'] }} </td>
-                    <td> {{ $item['unit_details'] }} </td>
                     <td> {{ $item['unit_price'] }} </td>
                     <td> {{ $item['unit_discount'] }} </td>
                     <td> {{ $item['quantity'] }} </td>
@@ -131,7 +127,7 @@
                     <td> {{ $item['line_total'] }} </td>
 
                     <td>
-                        <x-btn-delete wire:click="removeInvoiceItemFromList({{ $key }})"> X </x-btn-delete>
+                        <x-btn-delete wire:click.prevent="removeInvoiceItemFromList({{ $key }})"> X </x-btn-delete>
                     </td>
                 </tr>
                 @endforeach
@@ -140,15 +136,14 @@
             </x-table-body>
         </x-table>
 
-        <x-lable>
+        <div class=" flex space-x-2">
             <span>Sub Total</span>
-            <x-text-input wire:model="total_price" />
-        </x-lable>
-
-        <x-lable>
-            <span>Total Discount</span>
-            <x-text-input wire:model="total_discount" />
-        </x-lable>
+        <label>{{ $total_price }} </label>
+        </div>
+        <div class=" flex space-x-2">
+            <span>Sub Discount</span>
+        <label>{{ $total_discount }} </label>
+        </div>
 
         <x-form-footer>
             <x-flash-msg type="success" key="successInvoice" />

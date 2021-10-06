@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInvoiceReturnsTable extends Migration
+class CreateDistributorStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,15 @@ class CreateInvoiceReturnsTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoice_returns', function (Blueprint $table) {
+        Schema::create('distributor_stocks', function (Blueprint $table) {
             $table->id();
             $table->date('date');
+            $table->unsignedBigInteger('issue_note_id'); //should check
             $table->unsignedBigInteger('distributor_id');
-            $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger('invoice_item_id');
+            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('stock_id');
             $table->smallInteger('quantity');
-            $table->string('reason',70);
-            $table->boolean('is_reusable') ->default('0');
+            $table->boolean('is_checked_and_returned')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,6 +34,6 @@ class CreateInvoiceReturnsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoice_returns');
+        Schema::dropIfExists('distributor_stocks');
     }
 }
