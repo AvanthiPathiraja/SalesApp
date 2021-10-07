@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\IssueItem;
 use App\Models\IssueNote;
 use App\View\Components\FlashMsg;
+use Illuminate\Support\Facades\DB;
 
 class Create extends Component
 {
@@ -31,7 +32,7 @@ class Create extends Component
     {
         $this->products = Product::where('is_active',1)->get();
         $this->distributors = Employee::where('is_active',1)->get();
-        $this->date = date('y-m-d');
+        $this->date = date('Y-m-d');
 
         if($this->issue_note)
         {
@@ -75,12 +76,14 @@ class Create extends Component
         if($this->stock_id)
         {
             $stock = Stock::find($this->stock_id);
+            $stock_in_total = ($stock->quantity + $stock->returned_quantity);
+            $stock_out_total = ($stock->issued_quantity + $stock->discarded_quantity + $stock->invoiced_quantity);
+            $stock_in_hand = ($stock_in_total - $stock_out_total);
+            $quantity_in_list = collect($this->issue_items)->where('stock_id',$this->stock_id)->sum('quantity');
+
+            $this->available_quantity = ($stock_in_hand - $quantity_in_list);
             $this->unit_price = $stock->unit_price;
             $this->expire_date = $stock->expire_date;
-            $recieved_quantity = $stock->quantity;
-            $issued_quantity = IssueItem::where('stock_id',$stock->id)->sum('quantity');
-            $quantity_in_list = collect($this->issue_items)->where('stock_id',$this->stock_id)->sum('quantity');
-            $this->available_quantity = $recieved_quantity - ($issued_quantity + $quantity_in_list);
         }
     }
 
@@ -132,7 +135,7 @@ class Create extends Component
 
     }
 
-    public function saveOrUpdateIssueNote()
+    public function saveIssueNote()
     {
         $validated_data = $this->validate([
             'number' => 'required|max:20',
@@ -144,10 +147,19 @@ class Create extends Component
 
         if(collect($this->issue_items)->count() > 0)
         {
-            $this->issue_note = IssueNote::updateOrCreate($validated_data);
+            $this->issue_note = IssueNote::create($validated_data);
+            $this->issue_note_id = $this->issue_note->id;
             $this->issue_note->issue_items()->delete();
             $this->issue_note->issue_items()->createMany($this->issue_items);
 
+            foreach($this->issue_items as $issue_item)
+            {
+                $issue_quantity = $issue_item['quantity'];
+                Stock::where('id',$issue_item['stock_id'])
+                    ->update([
+                        'issued_quantity' => DB::raw('issued_quantity + '.$issue_quantity),
+                    ]);
+            }
             session()->flash('successIssueNote','Completed Successfully !');
         }
         else
@@ -156,8 +168,23 @@ class Create extends Component
         }
     }
 
+    public function resetIssueNote()
+    {
+        $this->reset(['issue_note','issue_note_id','distributor_id','date','number','reference','issue_items']);
+        $this->date = date('Y-m-d');
+    }
+
     public function deleteIssueNote(IssueNote $issue_note)
     {
+        $issue_items = IssueItem::where('issue_note_id',$issue_note->id)->get();
+        foreach($issue_items as $issue_item)
+        {
+            $issue_quantity = $issue_item->quantity;
+            Stock::where('id',$issue_item->stock_id)
+                ->update([
+                    'issued_quantity' => DB::raw('issued_quantity - '.$issue_quantity),
+                ]);
+        }
         $issue_note->delete();
         return redirect()->route('issue-note.index');
     }

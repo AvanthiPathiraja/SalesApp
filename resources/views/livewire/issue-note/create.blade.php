@@ -12,7 +12,7 @@
         <div class="grid grid-cols-5 gap-3 gap-x-4">
 
             <x-lable>
-                <span>Issue Note Number</span>
+                <span>Issue Note Number *</span>
                 <x-text-input wire:model="number" />
                 <x-form-error for="number" />
             </x-lable>
@@ -24,13 +24,13 @@
             </x-lable>
 
             <x-lable>
-                <span>Date Issued</span>
+                <span>Date Issued *</span>
                 <x-text-input wire:model="date" />
                 <x-form-error for="date" />
             </x-lable>
 
             <x-lable class=" col-span-2">
-                <span>Distributor</span>
+                <span>Distributor *</span>
                 <x-select wire:model="distributor_id">
                     <option value=""></option>
                     @foreach ( $distributors as $distributor )
@@ -44,15 +44,16 @@
 
         </div>
 
-        <div class="grid grid-cols-5 gap-3 gap-x-4 p-2 mt-2">
+        <div class="grid grid-cols-5 gap-3 gap-x-4 p-2">
+            <hr class=" mt-2 text-gray-600 col-span-5"/>
 
             <x-lable class="col-span-3">
-                <span>Product</span>
+                <span>Product *</span>
                 <x-select wire:model="product_id">
                     <option value=""></option>
                     @foreach ( $products as $product )
                     <option value="{{ $product->id }}">
-                        {{ "{$product->product_details}  {$product->unit_details}" }}
+                        {{ $product->product_details}
                     </option>
                     @endforeach
                 </x-select>
@@ -60,7 +61,7 @@
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>Product Stocks</span>
+                <span>Product Stock *</span>
                 <x-select wire:model="stock_id">
                     <option value=""></option>
                     @foreach ( $stocks as $stock )
@@ -83,7 +84,7 @@
             </x-lable>
 
             <x-lable>
-                <span>Quantity Issue</span>
+                <span>Quantity Issue *</span>
                 <x-text-input wire:model="quantity" />
                 <x-form-error for="quantity" />
             </x-lable>
@@ -136,9 +137,12 @@
         <x-form-footer >
             <x-flash-msg type="success" key="successIssueNote" />
             <x-flash-msg type="error" key="errorIssueNote" />
-            <x-btn-primary wire:click='saveOrUpdateIssueNote()'>
-                {{ $issue_note ? 'Update Issue Note' : 'Save Issue Note' }}
-            </x-btn-primary>
+
+            @if ($issue_note)
+                <x-btn-reset wire:click="resetIssueNote()"> Reset </x-btn-reset>
+                @else
+                <x-btn-primary wire:click='saveIssueNote()'> Create Issue Note </x-btn-primary>
+            @endif
         </x-form-footer>
 
     </x-card>

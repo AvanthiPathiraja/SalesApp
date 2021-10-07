@@ -22,6 +22,10 @@ class CreateStocksTable extends Migration
             $table->decimal('unit_cost')->nullable();
             $table->unsignedBigInteger('quantity');
             $table->date('expire_date')->nullable();
+            $table->smallInteger('issued_quantity')->default(0);
+            $table->smallInteger('returned_quantity')->default(0);
+            $table->smallInteger('invoiced_quantity')->default(0);
+            $table->smallInteger('discarded_quantity')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
