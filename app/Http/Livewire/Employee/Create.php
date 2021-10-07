@@ -7,8 +7,6 @@ use App\Models\Employee;
 
 class Create extends Component
 {
-    protected $listeners = ['deleteEmployee'];
-
     public $employee;
     public $employee_id;
     public $number,$title,$first_name,$last_name,$date_of_birth,$nic_number,$driving_lisence_number,$telephone,$mobile,$address,$email,$designation;
@@ -52,9 +50,15 @@ class Create extends Component
             'designation' => 'required|max:100'
         ]);
 
-        Employee::updateOrCreate(['id'=>$this->employee_id ?? null],$validated_data);
+        $this->employee = Employee::updateOrCreate(['id'=>$this->employee_id ?? null],$validated_data);
+        $this->employee_id = $this->employee->id;
         session()->flash('success','Successfully completed !');
-        //return redirect()->route('employee.index');
+    }
+
+    public function resetEmployee()
+    {
+        $this->reset(['employee','employee_id','number','title','first_name','last_name',
+        'date_of_birth','nic_number','driving_lisence_number','telephone','mobile','email','address','designation']);
     }
 
     public function deleteEmployee(Employee $employee)

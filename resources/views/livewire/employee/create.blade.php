@@ -13,13 +13,13 @@
         <div class="grid grid-cols-6 gap-3 gap-x-4">
 
             <x-lable>
-                <span>Number</span>
+                <span>Number *</span>
                 <x-text-input wire:model="number" />
                 <x-form-error for="number" />
             </x-lable>
 
             <x-lable>
-                <span>Title</span>
+                <span>Title *</span>
                 <x-select wire:model="title">
                     <option></option>
                     <option value="Mr."> Mr.</option>
@@ -30,13 +30,13 @@
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>First name</span>
+                <span>First name *</span>
                 <x-text-input wire:model="first_name" />
                 <x-form-error for="first_name" />
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>Last name</span>
+                <span>Last name *</span>
                 <x-text-input wire:model="last_name" />
                 <x-form-error for="last_name" />
             </x-lable>
@@ -60,7 +60,7 @@
             </x-lable>
 
             <x-lable>
-                <span>Telephone</span>
+                <span>Telephone *</span>
                 <x-text-input wire:model="telephone" />
                 <x-form-error for="telephone" />
             </x-lable>
@@ -72,7 +72,7 @@
             </x-lable>
 
             <x-lable class="col-span-4">
-                <span>Address</span>
+                <span>Address *</span>
                 <x-text-input wire:model="address" />
                 <x-form-error for="address" />
             </x-lable>
@@ -84,7 +84,7 @@
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>Designation</span>
+                <span>Designation *</span>
                 <x-select wire:model="designation">
                     <option></option>
                     <option value="Distributor"> Distributor</option>
@@ -99,6 +99,9 @@
                 <x-btn-primary wire:click='saveOrUpdateEmployee()'>
                     {{ $employee ? 'Update' : 'Save' }}
                 </x-btn-primary>
+                @if ($employee)
+                    <x-btn-reset wire:click="resetEmployee()"> Reset </x-btn-reset>
+                @endif
             </x-form-footer>
 
         </div>
