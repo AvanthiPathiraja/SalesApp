@@ -12,43 +12,43 @@
         <div class="grid grid-cols-6 gap-3 gap-x-4">
 
         <x-lable>
-            <span>Number</span>
+            <span>Number *</span>
             <x-text-input wire:model="number" />
             <x-form-error for="number" />
         </x-lable>
 
         <x-lable class=" col-span-2">
-            <span>Category</span>
+            <span>Category *</span>
             <x-text-input wire:model="category" />
             <x-form-error for="category" />
         </x-lable>
 
         <x-lable  class=" col-span-3">
-            <span>Name</span>
+            <span>Name *</span>
             <x-text-input wire:model="name" />
             <x-form-error for="name" />
         </x-lable>
 
         <x-lable>
-            <span>Metric</span>
+            <span>Metric *</span>
             <x-text-input wire:model="metric" />
             <x-form-error for="metric" />
         </x-lable>
 
         <x-lable>
-            <span>Size</span>
+            <span>Size *</span>
             <x-text-input wire:model="size" />
             <x-form-error for="size" />
         </x-lable>
 
         <x-lable>
-            <span>Unit Price</span>
+            <span>Unit Price *</span>
             <x-text-input wire:model="unit_price" />
             <x-form-error for="unit_price" />
         </x-lable>
 
         <x-lable>
-            <span>Minimum Stock</span>
+            <span>Minimum Stock *</span>
             <x-text-input wire:model="minimum_stock" />
             <x-form-error for="minimum_stock" />
         </x-lable>
@@ -64,6 +64,9 @@
             <x-btn-primary wire:click='saveOrUpdateProduct()'>
                 {{ $product ? 'Update' : 'Save' }}
             </x-btn-primary>
+            @if ($product)
+                <x-btn-reset wire:click="resetProduct()"> Reset </x-btn-reset>
+            @endif
         </x-form-footer>
 
         </div>

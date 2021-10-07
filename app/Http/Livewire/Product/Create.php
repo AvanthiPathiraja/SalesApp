@@ -30,6 +30,7 @@ class Create extends Component
             $this->note = $this->product->note;
         }
     }
+
     public function saveOrUpdateProduct()
     {
         $validated_data=$this->validate([
@@ -44,21 +45,20 @@ class Create extends Component
             'note' => 'nullable|max:150'
         ]);
 
-        Product::updateOrCreate(['id'=>$this->product_id ?? null],$validated_data);
+        $this->product = Product::updateOrCreate(['id'=>$this->product_id ?? null],$validated_data);
+        $this->product_id = $this->product->id;
         session()->flash('success','Successfully inserted !');
-        //return redirect()->route('product.index');
+    }
 
+    public function resetProduct()
+    {
+        $this->reset(['product','product_id','number','brand_id','category','name','metric','size','minimum_stock','unit_price']);
     }
 
     public function deleteProduct(Product $product)
     {
         $product->delete();
         return redirect()->route('product.index');
-    }
-
-    public function form_reset()
-    {
-        $this->reset(['number','brand_id','category','name','metric','size','minimum_stock','unit_price']);
     }
 
     public function render()
