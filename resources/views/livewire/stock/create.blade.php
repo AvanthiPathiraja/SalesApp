@@ -11,19 +11,19 @@
         <div class="grid grid-cols-5 gap-3 gap-x-4">
 
             <x-lable>
-                <span>Batch Number</span>
+                <span>Batch Number *</span>
                 <x-text-input wire:model="number" />
                 <x-form-error for="number" />
             </x-lable>
 
             <x-lable>
-                <span>Date Recieved</span>
+                <span>Date Recieved *</span>
                 <x-text-input wire:model="date" />
                 <x-form-error for="date" />
             </x-lable>
 
             <x-lable class=" col-span-4">
-                <span>Product</span>
+                <span>Product *</span>
                 <x-select wire:model="product_id">
                     <option value=""></option>
                     @foreach ( $products as $product )
@@ -42,13 +42,13 @@
             </x-lable>
 
             <x-lable>
-                <span>Unit Price</span>
+                <span>Unit Price *</span>
                 <x-text-input wire:model="unit_price" />
                 <x-form-error for="unit_price" />
             </x-lable>
 
             <x-lable>
-                <span>Quantity Recieved</span>
+                <span>Quantity Recieved *</span>
                 <x-text-input wire:model="quantity" />
                 <x-form-error for="quantity" />
             </x-lable>
@@ -62,8 +62,11 @@
             <x-form-footer class=" col-span-6">
                 <x-flash-msg type="success" key="success" />
                 <x-btn-primary wire:click='saveOrUpdateStock()'>
-                    {{ $product ? 'Update' : 'Save' }}
+                    {{ $stock ? 'Update' : 'Save' }}
                 </x-btn-primary>
+                @if ($stock)
+                    <x-btn-reset wire:click="resetStock()"> Reset </x-btn-reset>
+                @endif
             </x-form-footer>
 
         </div>

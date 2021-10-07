@@ -56,21 +56,21 @@ class Create extends Component
             'expire_date' => 'nullable|date',
         ]);
 
-        Stock::updateOrCreate(['id'=>$this->stock_id ?? null],$validated_data);
+        $this->stock = Stock::updateOrCreate(['id'=>$this->stock_id ?? null],$validated_data);
+        $this->stock_id = $this->stock->id;
         session()->flash('success','Successfully inserted !');
-       // return redirect()->route('stock.index');
+    }
 
+    public function resetStock()
+    {
+        $this->reset(['stock','stock_id','number','date','product_id','unit_price','unit_cost','quantity','expire_date']);
+        $this->date = date('Y-m-d');
     }
 
     public function deleteStock(Stock $stock)
     {
         $stock->delete();
         return redirect()->route('stock.index');
-    }
-
-    public function form_reset()
-    {
-        $this->reset(['number','date','product_id','unit_price','unit_cost','quantity','expire_date']);
     }
 
     public function render()
