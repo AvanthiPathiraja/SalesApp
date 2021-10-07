@@ -30,13 +30,14 @@
             <x-form-error for="note" />
         </x-lable>
 
-
-
         <x-form-footer  class=" col-span-6">
             <x-flash-msg type="success" key="success" />
             <x-btn-primary wire:click='saveOrUpdateRoute()'>
                 {{ $route ? 'Update' : 'Save' }}
             </x-btn-primary>
+            @if ($route)
+            <x-btn-reset wire:click="resetRoute()"> Reset </x-btn-reset>
+        @endif
         </x-form-footer>
 
         </div>

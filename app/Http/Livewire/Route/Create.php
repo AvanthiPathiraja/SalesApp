@@ -29,10 +29,15 @@ class Create extends Component
             'note' => 'nullable|max:150',
         ]);
 
-        Route::updateOrCreate($validated_data);
+        $this->route = Route::updateOrCreate(['id' => $this->route_id ?? null],$validated_data);
+        $this->route_id = $this->route->id;
         session()->flash('success','Completed Successfully !');
     }
 
+    public function resetRoute()
+    {
+        $this->reset(['route_id','name','area_id','note']);
+    }
     public function deleteRoute(Route $route)
     {
         $route->delete();
