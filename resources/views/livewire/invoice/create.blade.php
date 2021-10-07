@@ -61,11 +61,12 @@
                 <span>Product</span>
                 <x-select wire:model="stock_id">
                     <option value=""></option>
-                    @foreach ( $issue_item_stock as $item )
-                    <option value="{{ $item->id }}">
-                        {{ $item->product->product_details }}
-                    </option>
-                    @endforeach
+                     @foreach ( $distributor_cusrrent_stock as $item )
+                        <option value="{{ $item->stock_id }}">
+                            {{ "{$item->stock->number} - {$item->stock->product->product_details} }}
+                        </option>
+                        @endforeach
+
                 </x-select>
                 <x-form-error for='issue_item_id' />
             </x-lable>

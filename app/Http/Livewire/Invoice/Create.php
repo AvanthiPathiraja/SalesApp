@@ -25,6 +25,8 @@ class Create extends Component
     public $issue_item_id;
     public $invoice_return_stock = [];
     public $invoice_return_id;
+    public $distributor_cusrrent_stock = [];
+    public $stock,$stock_id;
     public $quantity_available_for_sale;
 
     public $invoice, $invoice_id, $number,$reference, $date, $total_price,$total_discount;
@@ -78,36 +80,38 @@ class Create extends Component
     {
         if($this->distributor_id)
         {
-            $this->issue_item_stock = IssueItem::whereHas('issue_note',function($issue_note){
-                $issue_note
-                ->where('distributor_id',$this->distributor_id);
-            })
-            ->where(function($issue_item){
-                $issue_item
-                ->where('is_cleared',0);
-            })
+            $this->distributor_cusrrent_stock = IssueItem::whereHas('issue_note',function($issue_note){
+                    $issue_note
+                    ->where('distributor_id',$this->distributor_id);
+                })
+            // ->where(function($issue_item){
+            //     $issue_item
+            //     ->where('is_cleared',0);
+            // })
             ->get();
 
-            $this->invoice_return_stock = InvoiceReturn::whereHas('invoice',function($invoice){
-                $invoice
-                ->where('distributor_id',$this->distributor_id);
-            })
-            ->where(function($invoice_return){
-                $invoice_return
-                ->where('is_cleared',0)
-                ->where('is_reusable',1);
-            })
-            ->get();
+            // $this->distributor_cusrrent_stock = InvoiceReturn::whereHas('invoice',function($invoice){
+            //         $invoice
+            //         ->where('distributor_id',$this->distributor_id);
+            //     })
+            // ->where(function($invoice_return){
+            //     $invoice_return
+            //     ->where('is_cleared',0)
+            //     ->where('is_reusable',1);
+            // })
+            //  ->union($this->issue_item_stock)
+            // ->get();
         }
+
     }
 
-    public function updatedIssueItemId($id)
+    public function updatedStockId($id)
     {
         if($this->issue_item_id)
         {
-            $this->issue_item = collect($this->issue_items)->where('id',$id)->first();
-            $issue_item_quantity = $this->issue_item->quantity;
-            $invoiced_item_quantity = InvoiceItem::where('issue_item_id',$this->issue_item_id)->sum('quantity');
+            $this->stock = collect($this->distributor_cusrrent_stock)->where('id',$id)->first();
+            $issued_quantity = $this->stock->quantity;
+            $invoiced_quantity = InvoiceItem::where('stock_id',$this->stock_id)->sum('quantity');
 
             $this->quantity_available_for_sale = $issue_item_quantity - $invoiced_item_quantity;
             $this->unit_price = $this->issue_item->stock->unit_price;

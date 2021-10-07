@@ -13,25 +13,25 @@
         <div class="grid grid-cols-6 gap-3 gap-x-4">
 
             <x-lable>
-                <span>Number</span>
+                <span>Number *</span>
                 <x-text-input wire:model="number" />
                 <x-form-error for="number" />
             </x-lable>
 
             <x-lable class="col-span-3">
-                <span>Name</span>
+                <span>Name *</span>
                 <x-text-input wire:model="name" />
                 <x-form-error for="name" />
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>Contacted Person</span>
+                <span>Contacted Person *</span>
                 <x-text-input wire:model="contacted_person" />
                 <x-form-error for="contacted_person" />
             </x-lable>
 
             <x-lable>
-                <span>Telephone</span>
+                <span>Telephone *</span>
                 <x-text-input wire:model="telephone" />
                 <x-form-error for="telephone" />
             </x-lable>
@@ -49,7 +49,7 @@
             </x-lable>
 
             <x-lable class="col-span-2">
-                <span>Route</span>
+                <span>Route *</span>
                 <x-select wire:model='route_id'>
                     <option value=""></option>
                     @foreach ( $routes as $route )
@@ -62,7 +62,7 @@
             </x-lable>
 
             <x-lable class="col-span-4">
-                <span>Address</span>
+                <span>Address *</span>
                 <x-text-input wire:model="address" />
                 <x-form-error for="address" />
             </x-lable>
@@ -79,6 +79,9 @@
                 <x-btn-primary wire:click='saveOrUpdateCustomer()'>
                     {{ $customer ? 'Update' : 'Save' }}
                 </x-btn-primary>
+                @if($customer)
+                <x-btn-reset wire:click='resetCustomer()'> Reset </x-btn-reset>
+                @endif
             </x-form-footer>
         </div>
     </x-card>

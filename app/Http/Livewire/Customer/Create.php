@@ -50,8 +50,15 @@ class Create extends Component
             'note' => 'nullable|max:100'
         ]);
 
-        Customer::updateOrCreate(['id' => $this->customer_id ?? null],$validated_data);
+        $this->customer = Customer::updateOrCreate(['id' => $this->customer_id ?? null],$validated_data);
+        $this->customer_id = $this->customer->id;
         session()->flash('success','Completed Successfully !');
+        //return redirect()->back();
+    }
+
+    public function resetCustomer()
+    {
+        $this->reset(['customer','customer_id','number','name','contacted_person','telephone','mobile','email','route_id','address','note']);
     }
 
     public function deleteCustomer(Customer $customer)

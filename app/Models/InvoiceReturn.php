@@ -28,8 +28,4 @@ class InvoiceReturn extends Model
         return $this->belongsTo(Stock::class);
     }
 
-    public function distributor()
-    {
-        return $this->morphToMany(Employee::class,"distributable");
-    }
 }

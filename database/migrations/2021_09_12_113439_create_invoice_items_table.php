@@ -21,6 +21,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->decimal('unit_discount')->default(0);
             $table->smallInteger('quantity');
             $table->boolean('is_free')->default('0');
+            $table->boolean('is_cleared')->default('0');
             $table->timestamps();
             $table->softDeletes();
         });

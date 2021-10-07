@@ -13,13 +13,13 @@
         <div class="grid grid-cols-6 gap-3 gap-x-4">
 
         <x-lable class=" col-span-2">
-            <span>Name</span>
+            <span>Name *</span>
             <x-text-input wire:model="name" />
             <x-form-error for="name" />
         </x-lable>
 
         <x-lable  class=" col-span-2">
-            <span>Area</span>
+            <span>Area *</span>
             <x-text-input wire:model="area_id" />
             <x-form-error for="area_id" />
         </x-lable>
