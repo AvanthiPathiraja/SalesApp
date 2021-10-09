@@ -2,16 +2,17 @@
 
 namespace App\Http\Livewire\Invoice;
 
+use App\Models\Stock;
 use App\Models\Invoice;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\IssueItem;
-use App\Models\InvoiceItem;
-use App\Models\DistributorStock;
-use App\Models\InvoiceReturn;
 use App\Models\IssueNote;
+use App\Models\InvoiceItem;
+use App\Models\InvoiceReturn;
+use App\Models\DistributorStock;
 use Illuminate\Support\Facades\DB;
 
 class Create extends Component
@@ -26,8 +27,7 @@ class Create extends Component
     public $invoice_return_stock = [];
     public $invoice_return_id;
     public $distributor_cusrrent_stock = [];
-    public $stock,$stock_id;
-    public $quantity_available_for_sale;
+    public $stock,$stock_id,$quantity_available;
 
     public $invoice, $invoice_id, $number,$reference, $date, $total_price,$total_discount;
 
@@ -39,7 +39,7 @@ class Create extends Component
     {
         $this->customers = Customer::where('is_active',1)->get();
         $this->distributors = Employee::where('is_active',1)->get();
-        $this->date = date('y-m-d');
+        $this->date = date('Y-m-d');
 
         if ($this->invoice)
         {
@@ -54,7 +54,6 @@ class Create extends Component
             $this->total_price = $this->invoice->total_price;
             $this->total_discount = $this->invoice->total_discount;
 
-            $this->updatedDistributorId();
 
             $selected_invoice_items = InvoiceItem::where('invoice_id', $this->invoice_id)->get();
 
@@ -62,7 +61,8 @@ class Create extends Component
             {
                 $this->invoice_items[] = [
                     'stock_id' => $invoice_item->stock_id,
-                    'product_details' => "{$invoice_item->stock->number} - {$invoice_item->stock->product->product_details}",
+                    'stock_number' => $invoice_item->stock->number,
+                    'product_details' => $invoice_item->stock->product->product_details,
                     'unit_price' => $invoice_item->unit_price,
                     'unit_discount' => $invoice_item->unit_discount,
                     'quantity' =>   $invoice_item->quantity,
@@ -80,64 +80,96 @@ class Create extends Component
     {
         if($this->distributor_id)
         {
-            $this->distributor_cusrrent_stock = IssueItem::whereHas('issue_note',function($issue_note){
-                    $issue_note
+            $this->reset(['distributor_cusrrent_stock','stock','quantity_available','stock_id','unit_price',
+            'unit_discount','quantity','is_free']);
+
+            $stock_issue_items = IssueItem::where(function($issue_item){
+                    $issue_item ->where('is_cleared',0);
+                })
+                ->whereHas('issue_note',function($issue_note){
+                    $issue_note  ->where('distributor_id',$this->distributor_id);
+                })
+                ->get();
+
+            $stock_invoice_returns = InvoiceReturn::where(function($invoice_return){
+                    $invoice_return
+                    ->where('is_cleared',0)
+                    ->where('is_reusable',1)
                     ->where('distributor_id',$this->distributor_id);
                 })
-            // ->where(function($issue_item){
-            //     $issue_item
-            //     ->where('is_cleared',0);
-            // })
-            ->get();
+                ->get();
 
-            // $this->distributor_cusrrent_stock = InvoiceReturn::whereHas('invoice',function($invoice){
-            //         $invoice
-            //         ->where('distributor_id',$this->distributor_id);
-            //     })
-            // ->where(function($invoice_return){
-            //     $invoice_return
-            //     ->where('is_cleared',0)
-            //     ->where('is_reusable',1);
-            // })
-            //  ->union($this->issue_item_stock)
-            // ->get();
+            $stock_invoice_items = InvoiceItem::where(function($invoice_item){
+                    $invoice_item ->where('is_cleared',0);
+                })
+                ->whereHas('invoice',function($invoice){
+                    $invoice ->where('distributor_id',$this->distributor_id);
+                })
+                ->get();
+
+            foreach($stock_issue_items as $stock)
+            {
+                $this->distributor_cusrrent_stock[] = [
+                    'stock_id' => $stock->stock_id,
+                    'stock_number' => $stock->stock->number,
+                    'product_details' => $stock->stock->product->product_details,
+                    'quantity' => $stock->quantity,
+                ];
+            }
+            foreach($stock_invoice_returns as $stock)
+            {
+                $this->distributor_cusrrent_stock[] = [
+                    'stock_id' => $stock->stock_id,
+                    'stock_number' => $stock->stock->number,
+                    'product_details' => $stock->stock->product->product_details,
+                    'quantity' => $stock->quantity,
+                ];
+            }
+            foreach($stock_invoice_items as $stock)
+            {
+                $this->distributor_cusrrent_stock[] = [
+                    'stock_id' => $stock->stock_id,
+                    'stock_number' => $stock->stock->number,
+                    'product_details' => $stock->stock->product->product_details,
+                    'quantity' => '-'.$stock->quantity,
+                ];
+            }
+
+            //$this->distributor_cusrrent_stock = collect($this->distributor_cusrrent_stock)->groupBy('stock_id','stock_number','product_details');
+
+            //dd($this->distributor_cusrrent_stock);
         }
-
     }
 
     public function updatedStockId($id)
     {
-        if($this->issue_item_id)
+        if($this->stock_id)
         {
-            $this->stock = collect($this->distributor_cusrrent_stock)->where('id',$id)->first();
-            $issued_quantity = $this->stock->quantity;
-            $invoiced_quantity = InvoiceItem::where('stock_id',$this->stock_id)->sum('quantity');
+            $this->reset(['stock','quantity_available','unit_price','unit_discount','quantity','is_free']);
 
-            $this->quantity_available_for_sale = $issue_item_quantity - $invoiced_item_quantity;
-            $this->unit_price = $this->issue_item->stock->unit_price;
+            $this->quantity_available = collect($this->distributor_cusrrent_stock)->where('stock_id',$this->stock_id)->sum('quantity');
+            $this->stock = Stock::where('id',$this->stock_id)->first();
+            $this->unit_price = $this->stock->unit_price;
         }
     }
 
     public function addInvoiceItemToList()
     {
         $this->validate([
-            'issue_item_id' => 'required|numeric',
+            'stock_id' => 'required|numeric',
             'unit_price' => 'required|numeric|min:1',
             'unit_discount' => 'nullable|numeric',
             'quantity' => 'required|numeric|min:1',
         ]);
 
-        //dd($this->issue_item);
-
         $this->invoice_items[] = [
-            'issue_item_id' => $this->issue_item->id,
-            'product_details' => $this->issue_item->product->product_details,
-            'unit_details' => $this->issue_item->product->unit_details,
+            'stock_id' => $this->stock_id,
+            'stock_number' => $this->stock->number,
+            'product_details' => $this->stock->product->product_details,
             'unit_price' => $this->unit_price,
-            'unit_discount' => $this->unit_discount,
+            'unit_discount' => $this->unit_discount ?? '0',
             'quantity' =>   $this->quantity,
-            'display_is_free' =>   $this->is_free ? 'Yes' : 'No',
-            'is_free' =>   $this->is_free,
+             'is_free' =>   $this->is_free  ? '1' : '0',
             'discount_total' =>   ($this->quantity * $this->unit_discount),
             'line_total' =>   ($this->quantity * ($this->unit_price - $this->unit_discount))
         ];
@@ -146,7 +178,8 @@ class Create extends Component
         $this->total_discount = collect($this->invoice_items)->sum('discount_total');
 
         session()->flash('successInvoiceItem','Completed Successfully !');
-        $this->reset(['issue_item_id','unit_price','unit_discount','quantity']);
+
+        $this->reset(['stock','quantity_available','stock_id','unit_price','unit_discount','quantity','is_free']);
     }
 
     public function removeInvoiceItemFromList($key)
@@ -168,9 +201,10 @@ class Create extends Component
 
         if(collect($this->invoice_items)->count() > 0)
         {
+            //dd($this->invoice_items);
             $this->invoice = Invoice::updateOrCreate($validated_data);
-            $this->invoice->items()->delete();
-            $this->invoice->items()->createMany($this->invoice_items);
+            $this->invoice->invoice_items()->delete();
+            $this->invoice->invoice_items()->createMany($this->invoice_items);
 
             session()->flash('successInvoice','Completed Successfully !');
         }

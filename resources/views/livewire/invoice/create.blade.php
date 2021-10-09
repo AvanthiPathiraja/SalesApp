@@ -11,6 +11,7 @@
                 <x-table-top-title>Invoice Info </x-table-top-title>
             </div>
         </x-table-top>
+
         <div class="grid grid-cols-5 gap-3 gap-x-4">
 
             <x-lable>
@@ -37,7 +38,7 @@
                     <option value=""></option>
                     @foreach ( $customers as $customer )
                     <option value="{{ $customer->id }}">
-                        {{ $customer->name }}
+                        {{ "{$customer->number} - {$customer->name}" }}
                     </option>
                     @endforeach
                 </x-select>
@@ -50,31 +51,32 @@
                     <option value=""></option>
                     @foreach ( $distributors as $distributor )
                     <option value="{{ $distributor->id }}">
-                        {{ $distributor->full_name }}
+                        {{ "{$distributor->number} - {$distributor->full_name}" }}
                     </option>
                     @endforeach
                 </x-select>
                 <x-form-error for="distributor_id" />
             </x-lable>
 
-            <x-lable class=" col-span-4">
+            <br>
+            <hr class=" col-span-5">
+
+            <x-lable class=" col-span-3">
                 <span>Product</span>
                 <x-select wire:model="stock_id">
                     <option value=""></option>
-                     @foreach ( $distributor_cusrrent_stock as $item )
-                        <option value="{{ $item->stock_id }}">
-                            {{ "{$item->stock->number} - {$item->stock->product->product_details} }}
+                     @foreach ( $distributor_cusrrent_stock as $stock )
+                        <option value="{{ $stock['stock_id'] }}">
+                            {{ "{$stock['stock_number']} - {$stock['product_details']}" }}
                         </option>
                         @endforeach
-
                 </x-select>
-                <x-form-error for='issue_item_id' />
+                <x-form-error for='stock_id' />
             </x-lable>
 
             <x-lable>
-                <span>Unit Price</span>
-                <x-text-input wire:model="unit_price" />
-                <x-form-error for='unit_price' />
+                <span>Quantity available</span>
+                <x-text-input wire:model="quantity_available"  readonly/>
             </x-lable>
 
             <x-lable>
@@ -95,14 +97,14 @@
                 <x-form-error for="quantity" />
             </x-lable>
 
-           <x-lable class="mt-5 m-2 col-span-2">
+           <x-lable class="mt-5 m-2">
             <span></span>
                 <x-checkbox-input type="checkbox" wire:model="is_free" /> Given For Free
             </x-lable>
 
 
 
-            <x-form-footer class="col-span-6">
+            <x-form-footer class="col-span-5">
                 <x-flash-msg type="success" key="successInvoiceItem" />
                 <x-btn-primary wire:click.prevent='addInvoiceItemToList()'>Add</x-btn-primary>
             </x-form-footer>
@@ -113,6 +115,7 @@
 
         <x-table class=" mt-3 mb-3">
             <x-table-head>
+                <th>Batch Number</th>
                 <th>Product</th>
                 <th>Unit Price</th>
                 <th>Unit Discount</th>
@@ -126,11 +129,12 @@
 
                 @foreach ( $invoice_items as $key => $item )
                 <tr>
+                    <td> {{ $item['stock_number'] }} </td>
                     <td> {{ $item['product_details'] }} </td>
                     <td> {{ $item['unit_price'] }} </td>
                     <td> {{ $item['unit_discount'] }} </td>
                     <td> {{ $item['quantity'] }} </td>
-                    <td> {{ $item['is_free'] }} </td>
+                    <td> {{ $item['is_free']  ? 'Yes' : 'No' }} </td>
                     <td> {{ $item['line_total'] }} </td>
 
                     <td>
