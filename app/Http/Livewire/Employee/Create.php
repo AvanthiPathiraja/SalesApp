@@ -50,9 +50,9 @@ class Create extends Component
             'designation' => 'required|max:100'
         ]);
 
-        $this->employee = Employee::updateOrCreate(['id'=>$this->employee_id ?? null],$validated_data);
-        $this->employee_id = $this->employee->id;
+        Employee::updateOrCreate(['id'=>$this->employee_id ?? null],$validated_data);
         session()->flash('success','Successfully completed !');
+        $this->resetEmployee();
     }
 
     public function resetEmployee()
