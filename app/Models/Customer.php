@@ -29,5 +29,9 @@ class Customer extends Model
         return $this->hasMany(InvoicePayment::class);
     }
 
+    public function invoice_returns()
+    {
+        return $this->hasMany(InvoiceReturns::class);
+    }
 
 }

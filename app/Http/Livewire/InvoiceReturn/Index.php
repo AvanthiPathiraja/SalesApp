@@ -51,6 +51,8 @@ class Index extends InvoiceReturnCreate
         })
         ->paginate(10);
 
+        //dd($invoice_returns);
+
         return view('livewire.invoice-return.index')
             ->with(['invoice_returns' => $invoice_returns]);
     }

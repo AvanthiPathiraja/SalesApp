@@ -28,4 +28,16 @@ class InvoiceReturn extends Model
         return $this->belongsTo(Stock::class);
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function distributor()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+
+
 }

@@ -3,10 +3,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('invoice-return.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Customer Returns Info </x-table-top-title>
             </div>
         </x-table-top>
         <div class="grid grid-cols-6 gap-3 gap-x-4">
@@ -14,13 +14,11 @@
             <x-lable>
                 <span>Invoice Number</span>
                 <x-text-input wire:model="invoice_number" />
+                <x-flash-msg type="error" key="invalidInvoice" />
                 <x-form-error for="invoice_number" />
             </x-lable>
 
-            <div class="col-span-5">
-                <x-btn-edit wire:click.prevent='loadInvoice'>Check Invoice Details</x-btn-edit>
-                <x-flash-msg type="error" key="invalidInvoice" />
-            </div>
+            <x-btn-reset wire:click.prevent='loadInvoice'>Check Invoice Details</x-btn-reset>
 
             <x-lable>
                 <span>Reference</span>
@@ -36,6 +34,7 @@
              </x-lable>
 
         </div>
+        <hr class=" mt-2 mb-2 col-span-6">
 
         <div class="grid grid-cols-6 gap-3 gap-x-4">
 
@@ -51,7 +50,7 @@
                     <option value=""></option>
                     @foreach($invoice_items as $invoice_item )
                         <option value="{{ $invoice_item->id }}">
-                            {{ $invoice_item->issue_item_id }}
+                            {{ "{$invoice_item->stock->number} - {$invoice_item->stock->product->product_details}" }}
                         </option>
                     @endforeach
                 </x-select>
@@ -60,7 +59,7 @@
 
             <x-lable>
                 <span>Invoiced Quantity</span>
-                <x-text-input wire:model="invoice_item_quantity" readonly />
+                <x-text-input wire:model="invoice_quantity" readonly />
 
              </x-lable>
 
@@ -102,7 +101,9 @@
 
             <x-form-footer class="col-span-6">
                 <x-flash-msg type="success" key="success" />
-                <x-btn-primary wire:click.prevent='saveOrUpdateInvoiceReturn()'>
+                <x-flash-msg type="error" key="invalidQuantity" />
+                <x-flash-msg type="error" key="dupplicateStockId" />
+                <x-btn-primary wire:click.prevent='saveInvoiceReturn()'>
                     Save
                 </x-btn-primary>
             </x-form-footer>
