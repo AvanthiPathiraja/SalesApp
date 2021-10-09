@@ -106,6 +106,8 @@
 
             <x-form-footer class="col-span-5">
                 <x-flash-msg type="success" key="successInvoiceItem" />
+                <x-flash-msg type="error" key="dupplicateStockId" />
+                <x-flash-msg type="error" key="invalidQuantity" />
                 <x-btn-primary wire:click.prevent='addInvoiceItemToList()'>Add</x-btn-primary>
             </x-form-footer>
 
