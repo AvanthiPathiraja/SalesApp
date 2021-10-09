@@ -50,10 +50,9 @@ class Create extends Component
             'note' => 'nullable|max:100'
         ]);
 
-        $this->customer = Customer::updateOrCreate(['id' => $this->customer_id ?? null],$validated_data);
-        $this->customer_id = $this->customer->id;
+        Customer::updateOrCreate(['id' => $this->customer_id ?? null],$validated_data);
         session()->flash('success','Completed Successfully !');
-        //return redirect()->back();
+        $this->resetCustomer();
     }
 
     public function resetCustomer()
@@ -66,8 +65,6 @@ class Create extends Component
         $customer->delete();
         return redirect()->route('customer.index');
     }
-
-
 
     public function render()
     {

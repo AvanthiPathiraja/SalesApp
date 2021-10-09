@@ -7,17 +7,17 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $distributor_route,$route_id,$name,$area_id,$note;
+    public $route,$route_id,$name,$area_id,$note;
 
     public function mount()
     {
-        if($this->distributor_route)
+        if($this->route)
         {
-            $this->distributor_route = Route::findOrFail($this->distributor_route);
-            $this->route_id = $this->distributor_route->id;
-            $this->name = $this->distributor_route->name;
-            $this->area_id = $this->distributor_route->area_id;
-            $this->note = $this->distributor_route->note;
+            $this->route = Route::findOrFail($this->route);
+            $this->route_id = $this->route->id;
+            $this->name = $this->route->name;
+            $this->area_id = $this->route->area_id;
+            $this->note = $this->route->note;
         }
     }
 
@@ -29,18 +29,19 @@ class Create extends Component
             'note' => 'nullable|max:150',
         ]);
 
-        $this->distributor_route = Route::updateOrCreate(['id' => $this->route_id ?? null],$validated_data);
-        $this->route_id = $this->distributor_route->id;
+        Route::updateOrCreate(['id' => $this->route_id ?? null],$validated_data);
         session()->flash('success','Completed Successfully !');
+        $this->resetRoute();
     }
 
     public function resetRoute()
     {
-        $this->reset(['distributor_route','route_id','name','area_id','note']);
+        $this->reset(['route_id','name','area_id','note']);
     }
-    public function deleteRoute(Route $distributor_route)
+
+    public function deleteRoute(Route $route)
     {
-        $distributor_route->delete();
+        $route->delete();
         return redirect()->route('route.index');
     }
 

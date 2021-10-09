@@ -73,4 +73,4 @@ Route::get('discarded/stocks{discarded_stock}/edit', \App\Http\Livewire\Discarde
 
 Route::get('routes', \App\Http\Livewire\Route\Index::class)->name('route.index');
 Route::get('route/create', \App\Http\Livewire\Route\Create::class)->name('route.create');
-Route::get('routes/{distributor_route}/edit', \App\Http\Livewire\Route\Create::class)->name('route.edit');
+Route::get('routes/{route}/edit', \App\Http\Livewire\Route\Create::class)->name('route.edit');

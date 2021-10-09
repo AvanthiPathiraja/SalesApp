@@ -21,7 +21,7 @@ class Index extends RouteCreate
 
     public function render()
     {
-        $distributor_routes = Route::where('is_active',1)
+        $routes = Route::where('is_active',1)
             ->where(function($route){
                 $route
                 ->where('name','like','%'.$this->search.'%')
@@ -31,6 +31,6 @@ class Index extends RouteCreate
             ->paginate(10);
 
         return view('livewire.route.index')
-            ->with(['routes' => $distributor_routes ]);
+            ->with(['routes' => $routes ]);
     }
 }

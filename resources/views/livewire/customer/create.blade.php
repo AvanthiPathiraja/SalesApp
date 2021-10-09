@@ -76,12 +76,10 @@
 
             <x-form-footer class="col-span-6">
                 <x-flash-msg type="success" key="success" />
-                <x-btn-primary wire:click='saveOrUpdateCustomer()'>
+                <x-btn-primary wire:click.prev='saveOrUpdateCustomer()'>
                     {{ $customer ? 'Update' : 'Save' }}
                 </x-btn-primary>
-                @if($customer)
-                <x-btn-reset wire:click='resetCustomer()'> Reset </x-btn-reset>
-                @endif
+
             </x-form-footer>
         </div>
     </x-card>

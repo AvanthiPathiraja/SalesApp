@@ -21,19 +21,19 @@
             </x-table-head>
 
             <x-table-body>
-                @foreach( $routes as $distributor_route)
+                @foreach( $routes as $route)
                 <x-tbody-tr>
-                    <td>{{ $distributor_route->name }}</td>
-                    <td>{{ $distributor_route->area_id }}</td>
-                    <td>{{ $distributor_route->note }}</td>
+                    <td>{{ $route->name }}</td>
+                    <td>{{ $route->area_id }}</td>
+                    <td>{{ $route->note }}</td>
 
                     <td>
                         <x-tbody-btn-col>
-                        <a href="{{ route('route.edit', $distributor_route) }}">
+                        <a href="{{ route('route.edit', $route) }}">
                             <x-btn-edit/>
                         </a>
 
-                        <x-btn-delete wire:click.prevent='deleteRoute({{ $distributor_route }})'/>
+                        <x-btn-delete wire:click.prevent='deleteRoute({{ $route }})'/>
                     </x-tbody-btn-col>
                     </td>
                 </x-tbody-tr>
