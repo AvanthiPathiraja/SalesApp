@@ -148,7 +148,6 @@ class Create extends Component
         if(collect($this->issue_items)->count() > 0)
         {
             $this->issue_note = IssueNote::create($validated_data);
-            $this->issue_note_id = $this->issue_note->id;
             $this->issue_note->issue_items()->delete();
             $this->issue_note->issue_items()->createMany($this->issue_items);
 
@@ -161,6 +160,7 @@ class Create extends Component
                     ]);
             }
             session()->flash('successIssueNote','Completed Successfully !');
+            $this->resetIssueNote();
         }
         else
         {

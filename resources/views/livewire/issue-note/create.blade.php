@@ -138,12 +138,8 @@
             <x-flash-msg type="success" key="successIssueNote" />
             <x-flash-msg type="error" key="errorIssueNote" />
 
-            @if ($issue_note)
-                <x-btn-reset wire:click="resetIssueNote()"> Reset </x-btn-reset>
-                @else
-                <x-btn-primary wire:click='saveIssueNote()'> Create Issue Note </x-btn-primary>
-            @endif
-        </x-form-footer>
+           <x-btn-primary wire:click='saveIssueNote()'> Create Issue Note </x-btn-primary>
+         </x-form-footer>
 
     </x-card>
 </x-page-body>
