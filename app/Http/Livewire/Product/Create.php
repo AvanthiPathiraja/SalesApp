@@ -45,9 +45,9 @@ class Create extends Component
             'note' => 'nullable|max:150'
         ]);
 
-        $this->product = Product::updateOrCreate(['id'=>$this->product_id ?? null],$validated_data);
-        $this->product_id = $this->product->id;
+        Product::updateOrCreate(['id'=>$this->product_id ?? null],$validated_data);
         session()->flash('success','Successfully inserted !');
+        $this->resetProduct();
     }
 
     public function resetProduct()
