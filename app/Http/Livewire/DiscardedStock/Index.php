@@ -6,8 +6,9 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\DiscardedStock;
 use Illuminate\Support\Facades\DB;
+use App\Http\Livewire\DiscardedStock\Create as DiscardedStockCreate;
 
-class Index extends Component
+class Index extends DiscardedStockCreate
 {
     use WithPagination;
 

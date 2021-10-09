@@ -3,10 +3,10 @@
 
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('discarded-stock.index') }}">
                     <x-btn-back/>
                 </a>
-                <x-table-top-title>Client Info </x-table-top-title>
+                <x-table-top-title>Discarded stock Info </x-table-top-title>
             </div>
         </x-table-top>
             <div class="grid grid-cols-6 gap-3 gap-x-4">
@@ -23,7 +23,7 @@
                     <option value=""></option>
                     @foreach($stocks as $stock )
                         <option value="{{ $stock->id }}">
-                            {{ $stock->product->product_details }}
+                            {{ "{$stock->number} - {$stock->product->product_details}" }}
                         </option>
                     @endforeach
                 </x-select>
@@ -32,9 +32,8 @@
 
             <x-lable>
                 <span>Current Quantity</span>
-                <x-text-input wire:model="stock_quantity" readonly />
-
-             </x-lable>
+                <x-text-input wire:model="current_stock_quantity" readonly />
+            </x-lable>
 
             <x-lable>
                 <span>Discarded Quantity</span>
@@ -60,14 +59,14 @@
                     <option value=""></option>
                     @foreach ( $employees as $employee )
                     <option value="{{ $employee->id }}">
-                        {{ $employee->full_name }}
+                        {{ "{$employee->number} - {$employee->full_name}" }}
                     </option>
                     @endforeach
                 </x-select>
                 <x-form-error for="employee_id" />
             </x-lable>
 
-            <x-lable>
+            <x-lable class=" col-span-2">
                 <span>Note </span>
                 <x-text-input wire:model="note" />
                 <x-form-error for='note' />
@@ -75,6 +74,7 @@
 
             <x-form-footer class="col-span-6">
                 <x-flash-msg type="success" key="success" />
+                <x-flash-msg type="error" key="invalidQuantity" />
                 <x-btn-primary wire:click.prevent='saveDiscardedStock()'>
                     Save
                 </x-btn-primary>
