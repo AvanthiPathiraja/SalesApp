@@ -17,11 +17,9 @@ class CreateIssueReturnsTable extends Migration
             $table->id();
             $table->date('date');
             $table->unsignedBigInteger('distributor_id');
-            $table->unsignedBigInteger('issue_item_id');
             $table->unsignedBigInteger('stock_id');
             $table->smallInteger('quantity');
-            $table->string('reason',70);
-            $table->boolean('is_reusable') ->default('0');
+            $table->string('note',150);
             $table->timestamps();
             $table->softDeletes();
         });

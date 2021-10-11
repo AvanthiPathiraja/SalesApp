@@ -5,39 +5,48 @@
         <a href="{{ route('issue-return.create') }}">
             <x-btn-new/>
         </a>
-        <x-table-top-title> Distributor Returns </x-table-top-title>
+        <x-table-top-title> Distributor Stock Transactions </x-table-top-title>
     </div>
     <div>
+        <x-select wire:model="distributor_id">
+            <option value=""></option>
+            @foreach ($distributors as $distributor)
+                <option value="{{ $distributor->id }}">
+                    {{ "{$distributor->number} - {$distributor->full_name}" }}
+                </option>
+            @endforeach)
+        </x-select>
         <livewire:search-input>
     </div>
     </x-table-top>
 
     <x-table>
         <x-table-head>
-            <th>Date</th>
             <th>Distributor</th>
             <th>Batch Number</th>
-            <th>Category</th>
             <th>Product</th>
-            <th>Quantity Returned</th>
-            <th>Reason</th>
+            <th>Issued Qty</th>
+            <th>Customer Returned Qty</th>
+            <th>Invoiced Qty</th>
+            <th>Distributor Returned Qty</th>
+            <th>Uncleared Balance</th>
             <th></th>
         </x-table-head>
 
         <x-table-body>
-            @foreach( $issue_returns as $issue_return )
+            @foreach( $distributor_stock_report as $distributor_stock )
             <x-tbody-tr>
-                <td>{{ $issue_return->date }}</td>
-                <td>{{ $issue_return->distributor->full_name }}</td>
-                <td>{{ $issue_return->stock->number }}</td>
-                <td>{{ $issue_return->stock->product->category }}</td>
-                <td>{{ $issue_return->stock->product->name }}</td>
-                <td>{{ $issue_return->quantity }}</td>
-                <td>{{ $issue_return->reason }}</td>
+                <td>{{ $distributor_stock['stock_number'] }}</td>
+                <td>{{ $distributor_stock['product_details'] }}</td>
+                <td>{{ $distributor_stock['issued_qty'] }}</td>
+                <td>{{ $distributor_stock['customer_returned_qty'] }}</td>
+                <td>{{ $distributor_stock['invoiced_qty'] }}</td>
+                <td>{{ $distributor_stock['distributor_returned_qty'] }}</td>
+                <td>{{ $distributor_stock['due_balance'] }}</td>
 
                  <td>
                      <x-tbody-btn-col>
-                    <x-btn-delete wire:click.prevent="deleteIssueReturn({{ $issue_return }})"/>
+                    <x-btn-delete wire:click.prevent="deleteIssueReturn({{ $distributor_stock }})"/>
                 </x-tbody-btn-col>
                 </td>
             </x-tbody-tr>
@@ -46,5 +55,5 @@
         </x-table-body>
     </x-table>
 
-{{ $issue_returns->links() }}
+{{-- {{ $distributor_stock_report->links() }} --}}
 </x-page-body>

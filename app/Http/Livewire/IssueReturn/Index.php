@@ -2,14 +2,15 @@
 
 namespace App\Http\Livewire\IssueReturn;
 
-use App\Models\InvoiceItem;
-use App\Models\InvoiceReturn;
+use App\Models\Stock;
+use Livewire\Component;
+use App\Models\Employee;
 use App\Models\IssueItem;
 use App\Models\IssueNote;
-use Livewire\Component;
+use App\Models\InvoiceItem;
 use App\Models\IssueReturn;
-use App\Models\Stock;
 use Livewire\WithPagination;
+use App\Models\InvoiceReturn;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -18,77 +19,104 @@ class Index extends Component
 
     public $search;
     protected $listeners = ['search'];
-    public $distributor_id = 1;
+    public $distributors = [];
+    public $distributor_id;
+    public $distributor_stock_report = [];
 
 
     public function search($val)
     {
-        $this->search = '%'.$val.'%';
+        $this->search = $val;
     }
 
-    public function stock_balance_data_set()
+    public function mount()
     {
-        $issue_items = IssueItem::select('stock_id',DB::raw('sum(quantity) as issuedQuantity,'.'0 as returnedQuantity, 0 as invoicedQuantity'))
+        $this->distributors = Employee::where('is_active',1)->get();
+    }
+
+    public function updatedDistributorId()
+    {
+        if($this->distributor_id)
+        {
+            $this->distributor_stock_report = $this->getDistributorStockReport()->toArray();
+
+            //dd($sArray);
+        }
+    }
+
+    public function getDistributorStockReport()
+    {
+        $issue_items = IssueItem::select([
+            'stock_id',
+            DB::raw('sum(quantity) as issued_qty'),
+            DB::raw('0 as customer_returned_qty'),
+            DB::raw('0 as invoiced_qty'),
+            DB::raw('0 as distributor_returned_qty'),
+        ])
         ->where('is_cleared',0)
         ->whereHas('issue_note',function($issue_note){
-            $issue_note
-            ->where('distributor_id',$this->distributor_id);
-        })
-        ->groupBy('stock_id')
-        ->get()->collect();
+            $issue_note->where('distributor_id',$this->distributor_id)
+            ->where('is_active',1);
+        })->groupBy('stock_id');
 
-        $invoice_returns = InvoiceReturn::select('stock_id',DB::raw('0 as issuedQuantity,sum(quantity) as returnedQuantity, 0 as invoicedQuantity'))
-                ->where('is_cleared',0)
-                ->where('distributor_id',$this->distributor_id)
-                ->groupBy('stock_id')
-                ->get()->collect();
+        $invoice_returns = InvoiceReturn::select([
+            'stock_id',
+            DB::raw('0 as issued_qty'),
+            DB::raw('sum(quantity) as customer_returned_qty'),
+            DB::raw('0 as invoiced_qty'),
+            DB::raw('0 as distributor_returned_qty'),
+        ])
+        ->where('is_cleared',0)
+        ->where('distributor_id',$this->distributor_id)
+        ->groupBy('stock_id');
 
-        $invoice_items = InvoiceItem::select('stock_id',DB::raw('0 as issuedQuantity,0 as returnedQuantity, sum(quantity) as invoicedQuantity'))
-                ->where('is_cleared',0)
-                ->whereHas('invoice',function($invoice){
-                    $invoice->where('distributor_id',$this->distributor_id);
-                })->groupBy('stock_id')
-                ->get()->collect();
+        $invoice_items = InvoiceItem::select([
+            'stock_id',
+            DB::raw('0 as issued_qty'),
+            DB::raw('0 as customer_returned_qty'),
+            DB::raw('sum(quantity) as invoiced_qty'),
+            DB::raw('0 as distributor_returned_qty'),
+        ])
+        ->where('is_cleared',0)
+        ->whereHas('invoice',function($invoice){
+            $invoice->where('distributor_id',$this->distributor_id)
+            ->where('is_active',1);
+        })->groupBy('stock_id');
 
+        $distributor_returns = IssueReturn::select([
+            'stock_id',
+            DB::raw('0 as issued_qty'),
+            DB::raw('0 as customer_returned_qty'),
+            DB::raw('0 as invoiced_qty'),
+            DB::raw('sum(quantity) as distributor_returned_qty'),
+        ])
+        ->where('distributor_id',$this->distributor_id)
+        ->groupBy('stock_id');
 
-        $stocks = $invoice_items->merge($issue_items)->merge($invoice_returns)->unique('stock_id');
+        $distributor_stock = $issue_items->unionAll($invoice_returns)->unionAll($invoice_items)->unionAll($distributor_returns)->get();
 
-        $stock_products = Stock::with('product')->whereIn('id', $stocks->pluck('stock_id'))->get();
+        $stock_products = Stock::with('product')->whereIn('id', $distributor_stock->unique('stock_id')->pluck('stock_id'))->get();
 
-        return $this->map_stock_data($stocks, $issue_items,$invoice_returns, $invoice_items, $stock_products);
-
-    }
-
-    public function map_stock_data($stocks, $issue_items,$invoice_returns, $invoice_items, $stock_products)
-    {
-        return $stocks->map(function ($stock) use($issue_items,$invoice_returns, $invoice_items, $stock_products) {
-
-            $issue_quantity = $issue_items->where('stock_id', $stock->stock_id)->first();
-            $invoice_quantity = $invoice_items->where('stock_id', $stock->stock_id)->first();
-            $return_quantity = $invoice_returns->where('stock_id', $stock->stock_id)->first();
-
-            $stock_product = $stock_products->where('id', $stock->stock_id)->first();
-
+        return $distributor_stock->groupBy('stock_id')->map(function ($stock, $keys) use($stock_products)
+        {
+            $stock_product = $stock_products->where('id', $keys)->first();
             return [
-                'product_name' => $stock_product->product->name,
-                'issue_quantity' => $issue_quantity->issuedQuantity,
-                'invoice_quantity' => $invoice_quantity->invoicedQuantity,
-                'return_quantity' => $return_quantity->returnedQuantity
+                'stock_id' => $stock_product->id,
+                'stock_number' => $stock_product->number,
+                'product_details' => $stock_product->product->name,
+                'issued_qty' => $stock->sum('issued_qty'),
+                'customer_returned_qty' => $stock->sum('customer_returned_qty'),
+                'invoiced_qty' => $stock->sum('invoiced_qty'),
+                'distributor_returned_qty' => $stock->sum('distributor_returned_qty'),
+                'due_balance' => ($stock->sum('issued_qty') + $stock->sum('customer_returned_qty'))
+                            - ( $stock->sum('invoiced_qty') + $stock->sum('distributor_returned_qty')),
             ];
-
         });
     }
 
-
-
     public function render()
     {
-
-
-        dd($this->stock_balance_data_set());
-
-
         return view('livewire.issue-return.index');
-           // ->with(['issue_returns' => $issue_returns ]);
+           // ->with(['issue_returns' => $this->distributor_stock_report ]);
     }
 }

@@ -2,7 +2,7 @@
     <x-card>
         <x-table-top>
             <div class=" flex space-x-2">
-                <a href="{{ route('customer.index') }}">
+                <a href="{{ route('issue-return.index') }}">
                     <x-btn-back/>
                 </a>
                 <x-table-top-title>Client Info </x-table-top-title>

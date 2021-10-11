@@ -24,7 +24,7 @@
                 @foreach( $routes as $route)
                 <x-tbody-tr>
                     <td>{{ $route->name }}</td>
-                    <td>{{ $route->area_id }}</td>
+                    <td>{{ $route->area->name }}</td>
                     <td>{{ $route->note }}</td>
 
                     <td>

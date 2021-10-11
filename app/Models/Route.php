@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Route as Area;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,5 +15,10 @@ class Route extends Model
     public function customers()
     {
         return $this->hasMany(Customer::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id');
     }
 }

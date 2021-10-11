@@ -21,16 +21,13 @@ class Index extends RouteCreate
 
     public function render()
     {
-        $routes = Route::where('is_active',1)
+        $routes = Route::with('area')->where('is_active',1)
             ->where(function($route){
-                $route
-                ->where('name','like','%'.$this->search.'%')
-                ->orWhere('area_id','like','%'.$this->search.'%')
-                ->orWhere('note','like','%'.$this->search.'%');
+                $route ->where('name','like','%'.$this->search.'%')
+                    ->orWhere('note','like','%'.$this->search.'%');
             })
             ->paginate(10);
 
-        return view('livewire.route.index')
-            ->with(['routes' => $routes ]);
+        return view('livewire.route.index')->with(['routes' => $routes ]);
     }
 }
