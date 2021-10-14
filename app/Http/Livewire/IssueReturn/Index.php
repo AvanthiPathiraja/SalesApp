@@ -32,15 +32,16 @@ class Index extends Component
     public function mount()
     {
         $this->distributors = Employee::where('is_active',1)->get();
+
     }
 
     public function updatedDistributorId()
     {
         if($this->distributor_id)
         {
-            $this->distributor_stock_report = $this->getDistributorStockReport()->toArray();
+            $this->distributor_stock_report = $this->getDistributorStockReport();
 
-            //dd($sArray);
+            //dd($this->distributor_stock );
         }
     }
 
@@ -111,7 +112,8 @@ class Index extends Component
                 'due_balance' => ($stock->sum('issued_qty') + $stock->sum('customer_returned_qty'))
                             - ( $stock->sum('invoiced_qty') + $stock->sum('distributor_returned_qty')),
             ];
-        });
+        })
+        ->toarray();
     }
 
     public function render()
