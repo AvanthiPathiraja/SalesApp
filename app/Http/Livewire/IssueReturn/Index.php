@@ -40,8 +40,6 @@ class Index extends Component
         if($this->distributor_id)
         {
             $this->distributor_stock_report = $this->getDistributorStockReport();
-
-            //dd($this->distributor_stock );
         }
     }
 
@@ -113,12 +111,12 @@ class Index extends Component
                             - ( $stock->sum('invoiced_qty') + $stock->sum('distributor_returned_qty')),
             ];
         })
-        ->toarray();
+        ->toArray();
     }
 
     public function render()
     {
-        return view('livewire.issue-return.index');
-           // ->with(['issue_returns' => $this->distributor_stock_report ]);
+        return view('livewire.issue-return.index')
+           ->with(['distributor_stocks' => $this->distributor_stock_report ]);
     }
 }

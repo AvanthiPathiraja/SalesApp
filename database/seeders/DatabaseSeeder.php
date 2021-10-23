@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         DiscardedStock::truncate();
 
 
-        Route::factory(100)->create();
+        Route::factory(5)->create();
          Customer::factory(1000)->create();
          Employee::factory(100)->create();
          Product::factory(2000)->create();

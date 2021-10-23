@@ -34,7 +34,7 @@
         </x-table-head>
 
         <x-table-body>
-            @foreach( $distributor_stock_report as $distributor_stock )
+            @foreach( $distributor_stocks as $distributor_stock )
             <x-tbody-tr>
                 <td>{{ $distributor_stock['stock_number'] }}</td>
                 <td>{{ $distributor_stock['product_details'] }}</td>
@@ -45,9 +45,7 @@
                 <td>{{ $distributor_stock['due_balance'] }}</td>
 
                  <td>
-                     <x-tbody-btn-col>
-                    <x-btn-delete wire:click.prevent="deleteIssueReturn({{ $distributor_stock }})"/>
-                </x-tbody-btn-col>
+
                 </td>
             </x-tbody-tr>
 
