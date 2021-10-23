@@ -23,22 +23,18 @@ class Index extends DiscardedStockCreate
     public function render()
     {
         $discarded_stocks = DiscardedStock::where(function($discarded_stock){
-            $discarded_stock
-            ->where('date','like','%'.$this->search.'%')
+            $discarded_stock->where('date','like','%'.$this->search.'%')
             ->orWhere('quantity','like','%'.$this->search.'%')
             ->orWhere('reason','like','%'.$this->search.'%');
         })
         ->orWhereHas('employee',function($employee){
-            $employee
-            ->where(DB::raw('concat(title," ",first_name," ",last_name)'),'like','%'.$this->search.'%');
+            $employee->where(DB::raw('concat(title," ",first_name," ",last_name)'),'like','%'.$this->search.'%');
         })
         ->orWhereHas('stock',function($stock){
-            $stock
-            ->where('number','like','%'.$this->search.'%')
-            ->orWhereHas('product',function($product){
-                $product
-                ->where('category','like','%'.$this->search.'%')
-                ->orWhere('name','like','%'.$this->search.'%');
+            $stock->where('number','like','%'.$this->search.'%')
+                ->orWhereHas('product',function($product){
+                $product->where('category','like','%'.$this->search.'%')
+                    ->orWhere('name','like','%'.$this->search.'%');
             });
         })
         ->paginate(10);
